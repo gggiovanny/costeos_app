@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { TablaCostosFijos } from "../components/tabla_costos_fijos";
 import { FloatingButton } from "../components/floating_button";
 
-const TableStyles = styled.div`
+const Styles = styled.div`
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
@@ -20,10 +20,17 @@ export function CostosFijos() {
 
   const [costosFijos, setCostosFijos] = useState(data);
 
+  const addData = () => {
+    setCostosFijos([
+      ...costosFijos,
+      { concepto: "Gas", costo_mensual: "2,000.00" }
+    ])
+    
+  }
   return (
-    <TableStyles>
+    <Styles>
       <TablaCostosFijos data={costosFijos} />
-      <FloatingButton onClick={() => alert("FAB Rocks!")} />
-    </TableStyles>
+      <FloatingButton onClick={addData} />
+    </Styles>
   );
 }
