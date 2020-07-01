@@ -1,23 +1,36 @@
-import React from "react"
-import { Link } from 'react-router-dom';
-import { Nav, Navbar } from "react-bootstrap";
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 export const MyNavbar = () => {
+  const [isActive, setIsActive] = useState(false)
+  let togleActive = () => { setIsActive(!isActive) }
   return (
-    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-      <Navbar.Brand as={Link} to="/">Costeapp</Navbar.Brand>
-      <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-      <Navbar.Collapse id="responsive-navbar-nav">
-        <Nav className="mr-auto">
-          <Nav.Link as={Link} to="/costos-fijos">Costos fijos</Nav.Link>
-          <Nav.Link as={Link} to="/insumos">Insumos</Nav.Link>
-          <Nav.Link as={Link} to="/recetas">Recetas</Nav.Link>
-          <Nav.Link as={Link} to="/reporte">Reporte</Nav.Link>
-        </Nav>
-        <Nav>
-          <Nav.Link as={Link} to="/about">Acerca de</Nav.Link>
-        </Nav>
-      </Navbar.Collapse>
-    </Navbar>
-  );
-};
+    <nav className="navbar is-primary" role="navigation" aria-label="main navigation">
+      <div className="navbar-brand">
+        <Link to='/' className="navbar-item">
+          <h1 className='title'>
+            Costeapp
+          </h1>
+        </Link>
+        <a role="button" onClick={togleActive} className={`navbar-burger burger ${isActive && 'is-active'}`} aria-label="menu" aria-expanded="false" data-target="mainNavbar">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div id="mainNavbar" className={`navbar-menu ${isActive && 'is-active'}`}>
+        <div className="navbar-start">
+          <Link className="navbar-item" to="/costos-fijos">Costos fijos</Link>
+          <Link className="navbar-item" to="/insumos">Insumos</Link>
+          <Link className="navbar-item" to="/recetas">Recetas</Link>
+          <Link className="navbar-item" to="/reporte">Reporte</Link>
+        </div>
+        <div className="navbar-end">
+        <Link to='/about' className="navbar-item">
+            Acerca de
+          </Link>
+        </div>
+      </div>
+    </nav>
+  )
+}

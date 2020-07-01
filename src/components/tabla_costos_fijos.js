@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { useTable } from "react-table";
-import Table from "react-bootstrap/Table";
 import PropTypes from "prop-types";
 
 const Styles = styled.div`
   table {
+    width: 100%;
     thead {
       tr:first-child {
         text-align: center;
@@ -60,7 +60,7 @@ function TablaUI({ columns, data }) {
 
   // Render the UI for your table
   return (
-    <Table bordered hover {...getTableProps()}>
+    <table className='table' {...getTableProps()}>
       <thead>
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
@@ -82,6 +82,6 @@ function TablaUI({ columns, data }) {
           );
         })}
       </tbody>
-    </Table>
+    </table>
   );
 }
