@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { TablaCostosFijos } from "../components/tabla_costos_fijos";
+import { FormCostosFijos } from "../components/form_costos_fijos";
 import { FloatingButton } from "../components/floating_button";
+import { useForm } from "react-hook-form";
 
 const Styles = styled.div`
   max-width: 800px;
@@ -20,15 +22,23 @@ export function CostosFijos() {
 
   const [costosFijos, setCostosFijos] = useState(data);
 
-  const addData = () => {
+  const { register, handleSubmit, errors } = useForm();
+  const addData = (data) => {
+    console.log(data);
     setCostosFijos([
       ...costosFijos,
-      { concepto: "Gas", costo_mensual: "2,000.00" }
-    ])
-    
-  }
+      data,
+    ]);
+  };
+
   return (
     <Styles>
+      <FormCostosFijos
+        register={register}
+        handleSubmit={handleSubmit}
+        onSubmit={addData}
+        errors={errors}
+      />
       <TablaCostosFijos data={costosFijos} />
       <FloatingButton onClick={addData} />
     </Styles>

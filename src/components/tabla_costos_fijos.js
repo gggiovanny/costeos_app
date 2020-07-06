@@ -25,7 +25,7 @@ export function TablaCostosFijos({ data }) {
             accessor: "concepto",
           },
           {
-            Header: "Costo Mensual",
+            Header: "Costo mensual",
             accessor: "costo_mensual",
           },
         ],
