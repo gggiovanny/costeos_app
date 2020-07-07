@@ -1,11 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Switch, Route } from 'react-router-dom'
-import { MyNavbar } from './components/navbar'
-import { Home } from './pages/home'
-import { CostosFijos } from './pages/costos_fijos'
-import { About } from './pages/about'
-import { NotFound } from './pages/not_found'
+import { MyNavbar } from './components/MyNavbar'
+import { Home } from './pages/Home'
+import { CostosFijos } from './pages/CostosFijos'
+import { About } from './pages/About'
+import { NotFound } from './pages/NotFound'
 
 const ContentDiv = styled.div`
   padding: 1rem;

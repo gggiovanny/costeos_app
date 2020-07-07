@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { TablaCostosFijos } from "../components/tabla_costos_fijos";
+import { TablaCostosFijos } from "../components/TablaCostosFijos";
 import { FormCostosFijos } from "../components/form_costos_fijos";
-import { FloatingButton } from "../components/floating_button";
+import { FloatingButton } from "../components/FloatingButton";
 import { useForm } from "react-hook-form";
 
 const Styles = styled.div`
