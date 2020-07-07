@@ -22,13 +22,14 @@ export function CostosFijos() {
 
   const [costosFijos, setCostosFijos] = useState(data);
 
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, reset } = useForm();
   const addData = (data) => {
     console.log(data);
     setCostosFijos([
       ...costosFijos,
       data,
     ]);
+    reset()
   };
 
   return (
