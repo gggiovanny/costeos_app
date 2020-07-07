@@ -1,35 +1,30 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { TablaCostosFijos } from "../components/TablaCostosFijos";
-import { FormCostosFijos } from "../components/form_costos_fijos";
-import { FloatingButton } from "../components/FloatingButton";
-import { useForm } from "react-hook-form";
+import React from 'react'
+import styled from 'styled-components'
+import { TablaCostosFijos } from '../components/TablaCostosFijos'
+import { FormCostosFijos } from '../components/form_costos_fijos'
+import { FloatingButton } from '../components/FloatingButton'
+import { useForm } from 'react-hook-form'
+import { useStateMachine } from 'little-state-machine'
+import { addCostoFijo } from '../providers/actions'
 
 const Styles = styled.div`
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
-`;
+`
 
 export function CostosFijos() {
-  const data = [
-    { concepto: "Nomina", costo_mensual: 2000 },
-    { concepto: "Pago de luz", costo_mensual: 500 },
-    { concepto: "Pago de agua", costo_mensual: 250 },
-    { concepto: "Gas", costo_mensual: 2000 },
-    { concepto: "Alquiler", costo_mensual: 3000 },
-  ];
+  const {
+    action,
+    state: { costos_fijos },
+  } = useStateMachine(addCostoFijo)
+  const { register, handleSubmit, errors, reset } = useForm()
 
-  const [costosFijos, setCostosFijos] = useState(data);
-
-  const { register, handleSubmit, errors, reset } = useForm();
   const addData = (data) => {
-    setCostosFijos([
-      ...costosFijos,
-      data,
-    ]);
+    console.log(data)
+    action(data)
     reset()
-  };
+  }
 
   return (
     <Styles>
@@ -39,8 +34,8 @@ export function CostosFijos() {
         onSubmit={addData}
         errors={errors}
       />
-      <TablaCostosFijos data={costosFijos} />
+      <TablaCostosFijos data={costos_fijos} />
       {/* <FloatingButton onClick={addData} /> */}
     </Styles>
-  );
+  )
 }
