@@ -13,18 +13,17 @@ const Styles = styled.div`
 
 export function CostosFijos() {
   const data = [
-    { concepto: "Nomina", costo_mensual: "2,000.00" },
-    { concepto: "Pago de luz", costo_mensual: "500.00" },
-    { concepto: "Pago de agua", costo_mensual: "250.00" },
-    { concepto: "Gas", costo_mensual: "2,000.00" },
-    { concepto: "Alquiler", costo_mensual: "3,000.00" },
+    { concepto: "Nomina", costo_mensual: 2000 },
+    { concepto: "Pago de luz", costo_mensual: 500 },
+    { concepto: "Pago de agua", costo_mensual: 250 },
+    { concepto: "Gas", costo_mensual: 2000 },
+    { concepto: "Alquiler", costo_mensual: 3000 },
   ];
 
   const [costosFijos, setCostosFijos] = useState(data);
 
   const { register, handleSubmit, errors, reset } = useForm();
   const addData = (data) => {
-    console.log(data);
     setCostosFijos([
       ...costosFijos,
       data,
@@ -41,7 +40,7 @@ export function CostosFijos() {
         errors={errors}
       />
       <TablaCostosFijos data={costosFijos} />
-      <FloatingButton onClick={addData} />
+      {/* <FloatingButton onClick={addData} /> */}
     </Styles>
   );
 }

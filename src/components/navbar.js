@@ -12,11 +12,11 @@ export const MyNavbar = () => {
             Costeapp
           </h1>
         </Link>
-        <a role="button" onClick={togleActive} className={`navbar-burger burger ${isActive && 'is-active'}`} aria-label="menu" aria-expanded="false" data-target="mainNavbar">
+        <span role="button" onClick={togleActive} className={`navbar-burger burger ${isActive && 'is-active'}`} aria-label="menu" aria-expanded="false" data-target="mainNavbar">
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
-        </a>
+        </span>
       </div>
       <div id="mainNavbar" className={`navbar-menu ${isActive && 'is-active'}`}>
         <div className="navbar-start">
