@@ -37,7 +37,6 @@ export function CostosFijos() {
     ],
     []
   )
-
   return (
     <div className="columns is-variable is-3">
       <div className="column">
