@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
 import { Switch, Route } from 'react-router-dom'
 import { MyNavbar } from './components/MyNavbar'
 import { Home } from './pages/Home'
@@ -19,24 +18,20 @@ createStore({
   costos_fijos,
 })
 
-const ContentDiv = styled.div`
-  padding: 1rem;
-`
-
 function App() {
   return (
     <div>
       <MyNavbar />
       <StateMachineProvider>
         <DevTool />
-        <ContentDiv>
+        <div className='container'>
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/costos-fijos" component={CostosFijos} />
             <Route exact path="/about" component={About} />
             <Route component={NotFound} />
           </Switch>
-        </ContentDiv>
+        </div>
       </StateMachineProvider>
     </div>
   )

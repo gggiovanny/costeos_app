@@ -1,51 +1,8 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react'
+import PropTypes from 'prop-types'
 import { useTable } from "react-table";
-import PropTypes from "prop-types";
 
-const Styles = styled.div`
-  table {
-    width: 100%;
-    thead {
-      tr:first-child {
-        text-align: center;
-      }
-    }
-  }
-`;
-
-export function TablaCostosFijos({ data }) {
-  const columns = React.useMemo(
-    () => [
-      {
-        Header: "Costos Fijos",
-        columns: [
-          {
-            Header: "Concepto",
-            accessor: "concepto",
-          },
-          {
-            Header: "Costo mensual",
-            accessor: "costo_mensual",
-          },
-        ],
-      },
-    ],
-    []
-  );
-
-  return (
-    <Styles>
-      <TablaUI columns={columns} data={data} />
-    </Styles>
-  );
-}
-
-TablaCostosFijos.propTypes = {
-  data: PropTypes.array.isRequired,
-};
-
-function TablaUI({ columns, data }) {
+export function BasicTable({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
@@ -58,9 +15,8 @@ function TablaUI({ columns, data }) {
     data,
   });
 
-  // Render the UI for your table
   return (
-    <table className='table' {...getTableProps()}>
+    <table className='table is-fullwidth is-hoverable' {...getTableProps()}>
       <thead>
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
@@ -85,3 +41,8 @@ function TablaUI({ columns, data }) {
     </table>
   );
 }
+
+BasicTable.propTypes = {
+  columns: PropTypes.array.isRequired,
+  data: PropTypes.array.isRequired,
+};
