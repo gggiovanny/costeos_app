@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { FormCostosFijos } from '../components/FormCostosFijos'
 import { BasicTable } from '../components/BasicTable'
 import { useForm } from 'react-hook-form'
 import { useStateMachine } from 'little-state-machine'
 import { addCostoFijo } from '../providers/actions'
+import { useStringFormatter } from '../hooks/useStringFormatter'
 
 export function CostosFijos() {
   // Inicializando el manejador global del state
@@ -19,24 +20,31 @@ export function CostosFijos() {
     reset()
   }
   // Definiendo columnas de la tabla
-  const columns = React.useMemo(
+  const columns = useMemo(
     () => [
       {
-        Header: 'Costos Fijos',
-        columns: [
-          {
-            Header: 'Concepto',
-            accessor: 'concepto',
-          },
-          {
-            Header: 'Costo mensual',
-            accessor: 'costo_mensual',
-          },
-        ],
+        Header: 'Concepto',
+        accessor: 'concepto',
+      },
+      {
+        Header: 'Costo mensual',
+        accessor: 'costo_mensual',
       },
     ],
     []
   )
+  // hook para dar formato a los campos de las tablas
+  const { money } = useStringFormatter()
+  // Dandole formato a los datos que se van a mostrar en la tabla
+  let formated_costos_fijos = useMemo(
+    () =>
+      costos_fijos.map((costo) => ({
+        concepto: costo.concepto,
+        costo_mensual: money.format(costo.costo_mensual),
+      })),
+    [costos_fijos, money]
+  )
+
   return (
     <div className="columns is-variable is-3">
       <div className="column">
@@ -51,7 +59,7 @@ export function CostosFijos() {
       </div>
       <div className="column">
         <div className="box">
-          <BasicTable columns={columns} data={costos_fijos} />
+          <BasicTable columns={columns} data={formated_costos_fijos} />
         </div>
       </div>
     </div>
