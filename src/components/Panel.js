@@ -13,8 +13,10 @@ export function Panel({ title, tabs, children, colorClass }) {
             ))}
           </p>
         )}
-        {children.map((Child) => (
-          <a className="panel-block">{Child}</a>
+        {React.Children.map(children, (child) => (
+          <label className="panel-block" key={child.key}>
+            {child}
+          </label>
         ))}
       </nav>
     </div>

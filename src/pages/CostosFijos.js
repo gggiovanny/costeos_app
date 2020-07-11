@@ -44,6 +44,14 @@ export function CostosFijos() {
       })),
     [costos_fijos, money]
   )
+  // Calculando total
+  const total = useMemo(() => {
+    let total = 0
+    costos_fijos.forEach((row) => {
+      total += parseFloat(row.costo_mensual)
+    })
+    return money.format(total)
+  }, [costos_fijos, money])
 
   return (
     <div className="columns is-variable is-3">
@@ -58,7 +66,11 @@ export function CostosFijos() {
         </div>
       </div>
       <div className="column">
-        <BasicTable columns={columns} data={formated_costos_fijos} />
+        <BasicTable
+          columns={columns}
+          data={formated_costos_fijos}
+          total={total}
+        />
       </div>
     </div>
   )
