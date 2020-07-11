@@ -7,6 +7,7 @@ import {
   useAsyncDebounce,
 } from 'react-table'
 import { Panel } from '../components/Panel'
+import { FiSearch } from 'react-icons/fi'
 
 export function BasicTable({ columns, data, total }) {
   // Use the state and functions returned from useTable to build your UI
@@ -99,20 +100,23 @@ function GlobalFilterInput({
   }, 200)
 
   return (
-    <span>
-      Buscar:{' '}
+    <p className="control has-icons-left">
       <input
+        className="input is-fullwidth"
+        type="search"
         value={value || ''}
         onChange={(e) => {
           setValue(e.target.value)
           onChange(e.target.value)
         }}
-        placeholder={`${count} registros...`}
+        placeholder={`Buscar entre ${count} registros...`}
         style={{
-          fontSize: '1.1rem',
           border: '0',
         }}
       />
-    </span>
+      <span className="icon is-left">
+        <FiSearch />
+      </span>
+    </p>
   )
 }
