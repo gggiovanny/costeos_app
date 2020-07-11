@@ -24,7 +24,7 @@ function App() {
       <MyNavbar />
       <StateMachineProvider>
         <DevTool />
-        <div className='container'>
+        <div className='container mt-4'>
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/costos-fijos" component={CostosFijos} />

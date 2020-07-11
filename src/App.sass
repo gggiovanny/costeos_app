@@ -24,5 +24,12 @@ $control-border-width: 2px;
 $input-shadow: none;
 
 // App customs
+// Setup Custom Colors
+$brown-invert: findColorInvert($brown);
+$pink-invert: findColorInvert($pink);
+// Add new color variables to the color map.
+@import "../node_modules/bulma/sass/utilities/_all.sass";
+$addColors: ( "brown":($brown, $brown-invert), "pink":($pink, $pink-invert),  );
+$colors: map-merge($colors, $addColors);
 
-@import "../node_modules/bulma/bulma.sass";
+@import "../node_modules/bulma/bulma.sass"

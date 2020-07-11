@@ -58,9 +58,7 @@ export function CostosFijos() {
         </div>
       </div>
       <div className="column">
-        <div className="box">
-          <BasicTable columns={columns} data={formated_costos_fijos} />
-        </div>
+        <BasicTable columns={columns} data={formated_costos_fijos} />
       </div>
     </div>
   )
