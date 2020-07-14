@@ -35,22 +35,13 @@ export function CostosFijos() {
   )
   // hook para dar formato a los campos de las tablas
   const { money } = useStringFormatter()
-  // Dandole formato a los datos que se van a mostrar en la tabla
-  let formated_costos_fijos = useMemo(
-    () =>
-      costos_fijos.map((costo) => ({
-        concepto: costo.concepto,
-        costo_mensual: money.format(costo.costo_mensual),
-      })),
-    [costos_fijos, money]
-  )
   // Calculando total
   const total = useMemo(() => {
     let total = 0
     costos_fijos.forEach((row) => {
       total += parseFloat(row.costo_mensual)
     })
-    return money.format(total)
+    return total
   }, [costos_fijos, money])
 
   // We need to keep the table from resetting the pageIndex when we
@@ -90,7 +81,7 @@ export function CostosFijos() {
       <div className="column">
         <BasicTable
           columns={columns}
-          data={formated_costos_fijos}
+          data={costos_fijos}
           total={total}
           updateMyData={updateMyData}
           skipPageReset={skipPageReset}

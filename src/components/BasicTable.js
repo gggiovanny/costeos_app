@@ -125,7 +125,9 @@ export function BasicTable({ columns, data, total, updateMyData, skipPageReset }
 BasicTable.propTypes = {
   columns: PropTypes.array.isRequired,
   data: PropTypes.array.isRequired,
-  total: PropTypes.string,
+  total: PropTypes.number,
+  updateMyData: PropTypes.func, 
+  skipPageReset: PropTypes.bool
 }
 
 function GlobalFilterInput({
