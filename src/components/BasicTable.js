@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import {
   useTable,
@@ -8,18 +8,26 @@ import {
 } from 'react-table'
 import { Panel } from '../components/Panel'
 import { FiSearch } from 'react-icons/fi'
+import { useStringFormatter } from '../hooks/useStringFormatter'
 
 const EditableCell = ({
   value: initialValue,
   row: { index },
   column: { id },
   updateMyData, // This is a custom function that we supplied to our table instance
+  numeric_column, // custom prop passed
 }) => {
   // We need to keep and update the state of the cell normally
   const [value, setValue] = React.useState(initialValue)
+  // hook para dar formato a los campos de las tablas
+  const { money, toFloat } = useStringFormatter()
 
-  const onChange = e => {
-    setValue(e.target.value)
+  // Cell: (props) => money.format(props.value),
+
+  const onChange = (e) => {
+    console.log(e.target.value, toFloat(e.target.value))
+    if (id == numeric_column) setValue(toFloat(e.target.value))
+    else setValue(e.target.value)
   }
 
   // We'll only update the external data when the input is blurred
@@ -27,12 +35,24 @@ const EditableCell = ({
     updateMyData(index, id, value)
   }
 
+  const onFocus = (e) => {
+    console.log(numeric_column, id, e.target.value, toFloat(e.target.value))
+    if (id == numeric_column) setValue(toFloat(e.target.value))
+  }
+
   // If the initialValue is changed external, sync it up with our state
   React.useEffect(() => {
     setValue(initialValue)
   }, [initialValue])
 
-  return <input value={value} onChange={onChange} onBlur={onBlur} />
+  return (
+    <input
+      value={id == numeric_column ? money.format(value) : value}
+      onChange={onChange}
+      onBlur={onBlur}
+      onFocus={onFocus}
+    />
+  )
 }
 
 // Set our editable cell renderer as the default Cell renderer
@@ -40,7 +60,25 @@ const defaultColumn = {
   Cell: EditableCell,
 }
 
-export function BasicTable({ columns, data, total, updateMyData, skipPageReset }) {
+export function BasicTable({
+  columns,
+  data,
+  numeric_column,
+  updateMyData,
+  skipPageReset,
+}) {
+  // Calculando total
+  const { money } = useStringFormatter()
+  const total = useMemo(() => {
+    let _total = 0
+    if (!numeric_column) return
+    data.forEach((row) => {
+      if (!numeric_column) return false
+      _total += parseFloat(row[numeric_column])
+    })
+    return money.format(_total)
+  }, [data])
+
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
@@ -64,6 +102,7 @@ export function BasicTable({ columns, data, total, updateMyData, skipPageReset }
       // That way we can call this function from our
       // cell renderer!
       updateMyData,
+      numeric_column,
     },
     useGlobalFilter,
     useSortBy
@@ -125,9 +164,9 @@ export function BasicTable({ columns, data, total, updateMyData, skipPageReset }
 BasicTable.propTypes = {
   columns: PropTypes.array.isRequired,
   data: PropTypes.array.isRequired,
-  total: PropTypes.number,
-  updateMyData: PropTypes.func, 
-  skipPageReset: PropTypes.bool
+  numeric_column: PropTypes.string,
+  updateMyData: PropTypes.func,
+  skipPageReset: PropTypes.bool,
 }
 
 function GlobalFilterInput({

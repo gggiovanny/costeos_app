@@ -4,7 +4,6 @@ import { BasicTable } from '../components/BasicTable'
 import { useForm } from 'react-hook-form'
 import { useStateMachine } from 'little-state-machine'
 import { costos_fijos_actions } from '../providers/actions'
-import { useStringFormatter } from '../hooks/useStringFormatter'
 
 export function CostosFijos() {
   // Inicializando el manejador global del state para agregar y editar elementos
@@ -33,17 +32,6 @@ export function CostosFijos() {
     ],
     []
   )
-  // hook para dar formato a los campos de las tablas
-  const { money } = useStringFormatter()
-  // Calculando total
-  const total = useMemo(() => {
-    let total = 0
-    costos_fijos.forEach((row) => {
-      total += parseFloat(row.costo_mensual)
-    })
-    return total
-  }, [costos_fijos, money])
-
   // We need to keep the table from resetting the pageIndex when we
   // Update data. So we can keep track of that flag with a ref.
   const [skipPageReset, setSkipPageReset] = React.useState(false)
@@ -82,7 +70,7 @@ export function CostosFijos() {
         <BasicTable
           columns={columns}
           data={costos_fijos}
-          total={total}
+          numeric_column="costo_mensual"
           updateMyData={updateMyData}
           skipPageReset={skipPageReset}
         />
