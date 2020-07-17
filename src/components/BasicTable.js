@@ -19,25 +19,25 @@ const EditableCell = ({
 }) => {
   // We need to keep and update the state of the cell normally
   const [value, setValue] = React.useState(initialValue)
+  // Para llevar control de si el campo esta siendo editado
+  const [isEditing, setIsEditing] = React.useState(false)
   // hook para dar formato a los campos de las tablas
   const { money, toFloat } = useStringFormatter()
 
-  // Cell: (props) => money.format(props.value),
-
   const onChange = (e) => {
-    console.log(e.target.value, toFloat(e.target.value))
-    if (id == numeric_column) setValue(toFloat(e.target.value))
-    else setValue(e.target.value)
+    setValue(e.target.value)
   }
 
   // We'll only update the external data when the input is blurred
   const onBlur = () => {
     updateMyData(index, id, value)
+    setIsEditing(false)
   }
 
   const onFocus = (e) => {
-    console.log(numeric_column, id, e.target.value, toFloat(e.target.value))
-    if (id == numeric_column) setValue(toFloat(e.target.value))
+    setIsEditing(true)
+    if(id == numeric_column)
+      setValue(toFloat(value))
   }
 
   // If the initialValue is changed external, sync it up with our state
@@ -47,7 +47,7 @@ const EditableCell = ({
 
   return (
     <input
-      value={id == numeric_column ? money.format(value) : value}
+      value={id == numeric_column && !isEditing ? money.format(value) : value}
       onChange={onChange}
       onBlur={onBlur}
       onFocus={onFocus}
