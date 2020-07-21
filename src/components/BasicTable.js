@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from 'react'
+import React, { useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import {
   useTable,
@@ -8,6 +8,7 @@ import {
 } from 'react-table'
 import { Panel } from '../components/Panel'
 import { FiSearch } from 'react-icons/fi'
+import { FiEdit } from 'react-icons/fi'
 import { useStringFormatter } from '../hooks/useStringFormatter'
 
 const EditableCell = ({
@@ -16,6 +17,7 @@ const EditableCell = ({
   column: { id },
   updateMyData, // This is a custom function that we supplied to our table instance
   numeric_column, // custom prop passed
+  isInEditMode, // indicate if the cell is in edit mode
 }) => {
   // We need to keep and update the state of the cell normally
   const [value, setValue] = React.useState(initialValue)
@@ -36,8 +38,7 @@ const EditableCell = ({
 
   const onFocus = (e) => {
     setIsEditing(true)
-    if(id == numeric_column)
-      setValue(toFloat(value))
+    if (id == numeric_column) setValue(toFloat(value))
   }
 
   // If the initialValue is changed external, sync it up with our state
@@ -45,13 +46,23 @@ const EditableCell = ({
     setValue(initialValue)
   }, [initialValue])
 
+  const displayValue =
+    id == numeric_column && !isEditing ? money.format(value) : value
+
   return (
-    <input
-      value={id == numeric_column && !isEditing ? money.format(value) : value}
-      onChange={onChange}
-      onBlur={onBlur}
-      onFocus={onFocus}
-    />
+    <>
+      {!isInEditMode ? (
+        <span>{displayValue}</span>
+      ) : (
+        <input
+          value={displayValue}
+          onChange={onChange}
+          onBlur={onBlur}
+          onFocus={onFocus}
+          type={id == numeric_column && isEditing ? 'number' : 'text'}
+        />
+      )}
+    </>
   )
 }
 
@@ -79,6 +90,9 @@ export function BasicTable({
     return money.format(_total)
   }, [data])
 
+  // Controla si las celdas se renderizan como inputs editables o de manera normal
+  const [isInEditMode, setIsInEditMode] = useState(false)
+
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
@@ -103,13 +117,28 @@ export function BasicTable({
       // cell renderer!
       updateMyData,
       numeric_column,
+      isInEditMode,
     },
     useGlobalFilter,
     useSortBy
   )
 
+  const onChangeEditMode = () => {
+    setIsInEditMode(!isInEditMode)
+  }
+
   return (
-    <Panel title="Costos fijos" colorClass="is-pink">
+    <Panel
+      title="Costos fijos"
+      colorClass="is-pink"
+      headerButton={
+        <FiEdit
+          className={isInEditMode && 'has-text-white'}
+          onClick={onChangeEditMode}
+          style={{ cursor: 'pointer' }}
+        />
+      }
+    >
       <GlobalFilterInput
         preGlobalFilteredRows={preGlobalFilteredRows}
         globalFilter={state.globalFilter}
