@@ -9,6 +9,7 @@ import {
 import { Panel } from '../components/Panel'
 import { FiSearch } from 'react-icons/fi'
 import { FiEdit } from 'react-icons/fi'
+import { MdDeleteForever } from 'react-icons/md'
 import { useStringFormatter } from '../hooks/useStringFormatter'
 
 const EditableCell = ({
@@ -55,6 +56,7 @@ const EditableCell = ({
         <span>{displayValue}</span>
       ) : (
         <input
+          className='input'
           value={displayValue}
           onChange={onChange}
           onBlur={onBlur}
@@ -66,21 +68,20 @@ const EditableCell = ({
   )
 }
 
-const ButtonDelete = ({ row, deleteData }) => (
-  <span
-    style={{
-      cursor: 'pointer',
-      color: 'blue',
-      textDecoration: 'underline',
-    }}
-    onClick={() => {
-      deleteData(row)
-      console.log('xdxd')
-    }}
-  >
-    Delete
-  </span>
-)
+const ButtonDelete = ({ row, deleteData, isInEditMode }) => {
+  return isInEditMode ? (
+    <MdDeleteForever
+      className='has-text-danger'
+      onClick={() => {
+        deleteData(row)
+      }}
+      style={{ cursor: 'pointer' }}
+      size={32}
+    />
+  ) : (
+    ''
+  )
+}
 
 // Set our editable cell renderer as the default Cell renderer
 const defaultColumn = {
@@ -153,10 +154,6 @@ export function BasicTable({
     useSortBy
   )
 
-  const onChangeEditMode = () => {
-    setIsInEditMode(!isInEditMode)
-  }
-
   return (
     <Panel
       title="Costos fijos"
@@ -164,7 +161,9 @@ export function BasicTable({
       headerButton={
         <FiEdit
           className={isInEditMode && 'has-text-white'}
-          onClick={onChangeEditMode}
+          onClick={() => {
+            setIsInEditMode(!isInEditMode)
+          }}
           style={{ cursor: 'pointer' }}
         />
       }
