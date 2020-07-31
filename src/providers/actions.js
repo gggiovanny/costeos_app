@@ -1,4 +1,7 @@
-export function costos_fijos_actions(old_state, { addRow, editRow }) {
+export function costos_fijos_actions(
+  old_state,
+  { addRow, editRow, deleteRow }
+) {
   if (addRow) {
     return {
       ...old_state,
@@ -19,6 +22,15 @@ export function costos_fijos_actions(old_state, { addRow, editRow }) {
         }
         return row
       }),
+    }
+  }
+
+  if (deleteRow) {
+    return {
+      ...old_state,
+      costos_fijos: old_state.costos_fijos.filter(
+        (element, index) => index != deleteRow
+      ),
     }
   }
 }
