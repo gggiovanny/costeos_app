@@ -66,16 +66,33 @@ const EditableCell = ({
   )
 }
 
+const ButtonDelete = ({ row, deleteData }) => (
+  <span
+    style={{
+      cursor: 'pointer',
+      color: 'blue',
+      textDecoration: 'underline',
+    }}
+    onClick={() => {
+      deleteData(row)
+      console.log('xdxd')
+    }}
+  >
+    Delete
+  </span>
+)
+
 // Set our editable cell renderer as the default Cell renderer
 const defaultColumn = {
   Cell: EditableCell,
 }
 
 export function BasicTable({
-  columns,
+  cols,
   data,
   numeric_column,
   updateMyData,
+  deleteData,
   skipPageReset,
 }) {
   // Calculando total
@@ -92,6 +109,18 @@ export function BasicTable({
 
   // Controla si las celdas se renderizan como inputs editables o de manera normal
   const [isInEditMode, setIsInEditMode] = useState(false)
+
+  const columns = useMemo(
+    () => [
+      ...cols,
+      {
+        Header: '',
+        accessor: 'delete',
+        Cell: ButtonDelete,
+      },
+    ],
+    [cols]
+  )
 
   // Use the state and functions returned from useTable to build your UI
   const {
@@ -116,6 +145,7 @@ export function BasicTable({
       // That way we can call this function from our
       // cell renderer!
       updateMyData,
+      deleteData,
       numeric_column,
       isInEditMode,
     },
@@ -191,10 +221,11 @@ export function BasicTable({
 }
 
 BasicTable.propTypes = {
-  columns: PropTypes.array.isRequired,
+  cols: PropTypes.array.isRequired,
   data: PropTypes.array.isRequired,
   numeric_column: PropTypes.string,
   updateMyData: PropTypes.func,
+  deleteData: PropTypes.func,
   skipPageReset: PropTypes.bool,
 }
 

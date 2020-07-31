@@ -18,6 +18,11 @@ export function CostosFijos() {
     action({ addRow: data })
     reset()
   }
+  // lambda usado por la tabla para eliminar datos al state de la tabla
+  const deleteData = (row) => {
+    action({ deleteRow: row.id })
+  }
+  
   // Definiendo columnas de la tabla
   const columns = useMemo(
     () => [
@@ -68,10 +73,11 @@ export function CostosFijos() {
       </div>
       <div className="column">
         <BasicTable
-          columns={columns}
+          cols={columns}
           data={costos_fijos}
           numeric_column="costo_mensual"
           updateMyData={updateMyData}
+          deleteData={deleteData}
           skipPageReset={skipPageReset}
         />
       </div>
