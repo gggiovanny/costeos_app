@@ -1,5 +1,6 @@
 import React from 'react'
 import FieldInput from './FieldInput'
+import PropTypes from 'prop-types'
 
 export function GenericForm({
   fields,
@@ -11,14 +12,15 @@ export function GenericForm({
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {fields.map((field) => (
+        {fields.map((field, index) => (
           <FieldInput
-            inputRef={register({ required: true })}
+            inputRef={register({ required: field.required === undefined ? true : field.required })}
             title={field.title}
             name={field.name}
             type={field.type}
             icon={field.icon}
             errors={errors}
+            key={field.name+index}
           />
         ))}
         <input
@@ -29,4 +31,8 @@ export function GenericForm({
       </form>
     </div>
   )
+}
+
+GenericForm.propTypes = {
+  fields: PropTypes.array.isRequired,
 }

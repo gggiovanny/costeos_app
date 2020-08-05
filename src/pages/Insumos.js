@@ -113,7 +113,6 @@ export function Insumos() {
   const deleteData = (row) => {
     action({ deleteRow: row.id })
   }
-  console.log(insumos)
 
   return (
     <div className="columns is-variable is-3">
