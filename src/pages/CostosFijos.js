@@ -1,9 +1,11 @@
 import React, { useMemo } from 'react'
-import { FormCostosFijos } from '../components/FormCostosFijos'
+import { GenericForm } from '../components/GenericForm'
 import { BasicTable } from '../components/BasicTable'
 import { useForm } from 'react-hook-form'
 import { useStateMachine } from 'little-state-machine'
 import { costos_fijos_actions } from '../providers/actions'
+import { FaClipboardList } from 'react-icons/fa'
+import { MdAttachMoney } from 'react-icons/md'
 
 export function CostosFijos() {
   // Inicializando el manejador global del state para agregar y editar elementos
@@ -18,6 +20,24 @@ export function CostosFijos() {
     action({ addRow: data })
     reset()
   }
+  // Campos del formulario
+  const fields = React.useMemo(
+    () => [
+      {
+        title: 'Concepto',
+        name: 'concepto',
+        type: 'text',
+        icon: <FaClipboardList />,
+      },
+      {
+        title: 'Costo mensual',
+        name: 'costo_mensual',
+        type: 'number',
+        icon: <MdAttachMoney />,
+      },
+    ],
+    []
+  )
 
   // Definiendo columnas de la tabla
   const columns = useMemo(
@@ -64,7 +84,8 @@ export function CostosFijos() {
     <div className="columns is-variable is-3">
       <div className="column">
         <div className="box">
-          <FormCostosFijos
+          <GenericForm
+            fields={fields}
             register={register}
             handleSubmit={handleSubmit}
             onSubmit={addData}
