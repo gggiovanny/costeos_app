@@ -39,7 +39,7 @@ const EditableCell = ({
 
   const onFocus = (e) => {
     setIsEditing(true)
-    if (id == numeric_column) setValue(toFloat(value))
+    if (id === numeric_column) setValue(toFloat(value))
   }
 
   // If the initialValue is changed external, sync it up with our state
@@ -48,7 +48,7 @@ const EditableCell = ({
   }, [initialValue])
 
   const displayValue =
-    id == numeric_column && !isEditing ? money.format(value) : value
+    id === numeric_column && !isEditing ? money.format(value) : value
 
   return (
     <>
@@ -61,7 +61,7 @@ const EditableCell = ({
           onChange={onChange}
           onBlur={onBlur}
           onFocus={onFocus}
-          type={id == numeric_column && isEditing ? 'number' : 'text'}
+          type={id === numeric_column && isEditing ? 'number' : 'text'}
         />
       )}
     </>
@@ -106,7 +106,7 @@ export function BasicTable({
       _total += parseFloat(row[numeric_column])
     })
     return money.format(_total)
-  }, [data])
+  }, [data, money, numeric_column])
 
   // Controla si las celdas se renderizan como inputs editables o de manera normal
   const [isInEditMode, setIsInEditMode] = useState(false)

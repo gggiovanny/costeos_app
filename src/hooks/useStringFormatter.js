@@ -1,5 +1,3 @@
-import { number } from 'prop-types'
-
 export function useStringFormatter() {
   return {
     money: new Intl.NumberFormat('en-US', {

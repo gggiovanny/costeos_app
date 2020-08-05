@@ -29,7 +29,7 @@ export function costos_fijos_actions(
     return {
       ...old_state,
       costos_fijos: old_state.costos_fijos.filter(
-        (element, index) => index != deleteRow
+        (element, index) => index !== deleteRow
       ),
     }
   }
