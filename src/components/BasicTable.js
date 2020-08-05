@@ -17,7 +17,7 @@ const EditableCell = ({
   row: { index },
   column: { id },
   updateMyData, // This is a custom function that we supplied to our table instance
-  numeric_column, // custom prop passed
+  money_column, // custom prop passed
   isInEditMode, // indicate if the cell is in edit mode
 }) => {
   // We need to keep and update the state of the cell normally
@@ -39,7 +39,7 @@ const EditableCell = ({
 
   const onFocus = (e) => {
     setIsEditing(true)
-    if (id === numeric_column) setValue(toFloat(value))
+    if (id === money_column) setValue(toFloat(value))
   }
 
   // If the initialValue is changed external, sync it up with our state
@@ -48,7 +48,7 @@ const EditableCell = ({
   }, [initialValue])
 
   const displayValue =
-    id === numeric_column && !isEditing ? money.format(value) : value
+    id === money_column && !isEditing ? money.format(value) : value
 
   return (
     <>
@@ -61,7 +61,7 @@ const EditableCell = ({
           onChange={onChange}
           onBlur={onBlur}
           onFocus={onFocus}
-          type={id === numeric_column && isEditing ? 'number' : 'text'}
+          type={id === money_column && isEditing ? 'number' : 'text'}
         />
       )}
     </>
@@ -89,9 +89,11 @@ const defaultColumn = {
 }
 
 export function BasicTable({
+  title,
   cols,
   data,
-  numeric_column,
+  money_column,
+  showTotal,
   updateMyData,
   deleteData,
   skipPageReset,
@@ -100,13 +102,12 @@ export function BasicTable({
   const { money } = useStringFormatter()
   const total = useMemo(() => {
     let _total = 0
-    if (!numeric_column) return
+    if (!money_column) return money.format(_total)
     data.forEach((row) => {
-      if (!numeric_column) return false
-      _total += parseFloat(row[numeric_column])
+      _total += parseFloat(row[money_column])
     })
-    return money.format(_total)
-  }, [data, money, numeric_column])
+    return money.format(_total || 0)
+  }, [data, money, money_column])
 
   // Controla si las celdas se renderizan como inputs editables o de manera normal
   const [isInEditMode, setIsInEditMode] = useState(false)
@@ -147,7 +148,7 @@ export function BasicTable({
       // cell renderer!
       updateMyData,
       deleteData,
-      numeric_column,
+      money_column,
       isInEditMode,
     },
     useGlobalFilter,
@@ -156,7 +157,7 @@ export function BasicTable({
 
   return (
     <Panel
-      title="Costos fijos"
+      title={title}
       colorClass="is-pink"
       headerButton={
         <FiEdit
@@ -206,7 +207,7 @@ export function BasicTable({
             )
           })}
         </tbody>
-        {total && (
+        {showTotal && (
           <tfoot>
             <tr>
               <td className="is-size-5 px-3 has-text-weight-bold">Total</td>
@@ -220,12 +221,14 @@ export function BasicTable({
 }
 
 BasicTable.propTypes = {
+  title: PropTypes.string.isRequired,
   cols: PropTypes.array.isRequired,
   data: PropTypes.array.isRequired,
-  numeric_column: PropTypes.string,
-  updateMyData: PropTypes.func,
-  deleteData: PropTypes.func,
-  skipPageReset: PropTypes.bool,
+  money_column: PropTypes.string,
+  showTotal: PropTypes.bool,
+  updateMyData: PropTypes.func.isRequired,
+  deleteData: PropTypes.func.isRequired,
+  skipPageReset: PropTypes.bool.isRequired,
 }
 
 function GlobalFilterInput({

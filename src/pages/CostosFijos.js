@@ -18,11 +18,7 @@ export function CostosFijos() {
     action({ addRow: data })
     reset()
   }
-  // lambda usado por la tabla para eliminar datos al state de la tabla
-  const deleteData = (row) => {
-    action({ deleteRow: row.id })
-  }
-  
+
   // Definiendo columnas de la tabla
   const columns = useMemo(
     () => [
@@ -41,6 +37,13 @@ export function CostosFijos() {
   // Update data. So we can keep track of that flag with a ref.
   const [skipPageReset, setSkipPageReset] = React.useState(false)
 
+  // After data chagnes, we turn the flag back off
+  // so that if data actually changes when we're not
+  // editing it, the page is reset
+  React.useEffect(() => {
+    setSkipPageReset(false)
+  }, [costos_fijos])
+
   // When our cell renderer calls updateMyData, we'll use
   // the rowIndex, columnId and new value to update the
   // original data
@@ -52,12 +55,10 @@ export function CostosFijos() {
     })
   }
 
-  // After data chagnes, we turn the flag back off
-  // so that if data actually changes when we're not
-  // editing it, the page is reset
-  React.useEffect(() => {
-    setSkipPageReset(false)
-  }, [costos_fijos])
+  // lambda usado por la tabla para eliminar datos al state de la tabla
+  const deleteData = (row) => {
+    action({ deleteRow: row.id })
+  }
 
   return (
     <div className="columns is-variable is-3">
@@ -73,9 +74,11 @@ export function CostosFijos() {
       </div>
       <div className="column">
         <BasicTable
+          title="Costos Fijos"
           cols={columns}
           data={costos_fijos}
-          numeric_column="costo_mensual"
+          money_column="costo_mensual"
+          showTotal={true}
           updateMyData={updateMyData}
           deleteData={deleteData}
           skipPageReset={skipPageReset}

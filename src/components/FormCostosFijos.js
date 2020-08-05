@@ -13,7 +13,7 @@ export function FormCostosFijos({ register, handleSubmit, onSubmit, errors }) {
         type="text"
         placeholder="Concepto"
         icon={<FaClipboardList />}
-        showError={errors.concepto}
+        errors={errors}
       />
 
       <FieldInput
@@ -23,9 +23,13 @@ export function FormCostosFijos({ register, handleSubmit, onSubmit, errors }) {
         type="number"
         placeholder="Costo mensual"
         icon={<MdAttachMoney />}
-        showError={errors.costo_mensual}
+        errors={errors}
       />
-      <input className="button is-success is-fullwidth" type="submit" value="Agregar" />
+      <input
+        className="button is-success is-fullwidth"
+        type="submit"
+        value="Agregar"
+      />
     </form>
   )
 }

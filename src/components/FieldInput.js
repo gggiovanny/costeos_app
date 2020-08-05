@@ -7,9 +7,10 @@ export function FieldInput({
   title,
   placeholder,
   icon,
-  showError,
+  errors,
   inputRef,
 }) {
+  const showError = errors[name]
   return (
     <div className="field">
       {title && <label className="label">{title}</label>}
@@ -19,12 +20,12 @@ export function FieldInput({
           className="input"
           name={name}
           type={type || 'text'}
-          placeholder={placeholder}
+          placeholder={placeholder || title}
         />
         {icon && <span className="icon is-small is-left">{icon}</span>}
       </div>
       {showError && (
-        <p className="help is-danger">Falta agregar { title.toLowerCase() }.</p>
+        <p className="help is-danger">Falta agregar {title.toLowerCase()}.</p>
       )}
     </div>
   )
@@ -36,7 +37,7 @@ FieldInput.propTypes = {
   title: PropTypes.string,
   placeholder: PropTypes.string,
   icon: PropTypes.element,
-  showError: PropTypes.object,
+  errors: PropTypes.object,
   inputRef: PropTypes.any,
 }
 
