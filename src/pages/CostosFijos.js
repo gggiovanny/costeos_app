@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 import { GenericForm } from '../components/GenericForm'
 import { BasicTable } from '../components/BasicTable'
 import { useForm } from 'react-hook-form'
@@ -6,7 +6,6 @@ import { useStateMachine } from 'little-state-machine'
 import { costos_fijos_actions } from '../providers/actions'
 import { FaClipboardList } from 'react-icons/fa'
 import { MdAttachMoney } from 'react-icons/md'
-import costos_fijos from './../providers/models/costos_fijos'
 
 
 export function CostosFijos() {
@@ -15,6 +14,17 @@ export function CostosFijos() {
   // lambda usado por el formulario para agregar datos al state de la tabla
   const addData = (data) => {
   }
+
+  const [data, setData] = useState([])
+  useEffect(() => {
+    fetch('http://localhost:8000/costosfijos/')
+    .then(res => res.json())
+    .then((res) => {
+      setData(res)
+      console.log(res);
+    })
+  }, [])
+
   // Campos del formulario
   const fields = React.useMemo(
     () => [
@@ -57,7 +67,7 @@ export function CostosFijos() {
   // editing it, the page is reset
   React.useEffect(() => {
     setSkipPageReset(false)
-  }, [costos_fijos])
+  }, [data])
 
   // When our cell renderer calls updateMyData, we'll use
   // the rowIndex, columnId and new value to update the
@@ -88,7 +98,7 @@ export function CostosFijos() {
         <BasicTable
           title="Costos Fijos"
           cols={columns}
-          data={costos_fijos}
+          data={data}
           money_column="costo_mensual"
           showTotal={true}
           updateMyData={updateMyData}
