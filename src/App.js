@@ -6,27 +6,11 @@ import { CostosFijos } from './pages/CostosFijos'
 import { Insumos } from './pages/Insumos'
 import { About } from './pages/About'
 import { NotFound } from './pages/NotFound'
-import costos_fijos from './providers/models/costos_fijos'
-import insumos from './providers/models/insumos'
-import { DevTool } from 'little-state-machine-devtools'
-import {
-  StateMachineProvider,
-  createStore,
-  setStorageType,
-} from 'little-state-machine'
-
-setStorageType(window.localStorage)
-createStore({
-  costos_fijos,
-  insumos,
-})
 
 function App() {
   return (
     <div>
       <MyNavbar />
-      <StateMachineProvider>
-        <DevTool />
         <div className='container mt-4'>
           <Switch>
             <Route exact path="/" component={Home} />
@@ -36,7 +20,6 @@ function App() {
             <Route component={NotFound} />
           </Switch>
         </div>
-      </StateMachineProvider>
     </div>
   )
 }

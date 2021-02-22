@@ -6,19 +6,14 @@ import { useStateMachine } from 'little-state-machine'
 import { costos_fijos_actions } from '../providers/actions'
 import { FaClipboardList } from 'react-icons/fa'
 import { MdAttachMoney } from 'react-icons/md'
+import costos_fijos from './../providers/models/costos_fijos'
+
 
 export function CostosFijos() {
-  // Inicializando el manejador global del state para agregar y editar elementos
-  const {
-    action,
-    state: { costos_fijos },
-  } = useStateMachine(costos_fijos_actions)
   // Inicializando el hook para el formulario
   const { register, handleSubmit, errors, reset } = useForm()
   // lambda usado por el formulario para agregar datos al state de la tabla
   const addData = (data) => {
-    action({ addRow: data })
-    reset()
   }
   // Campos del formulario
   const fields = React.useMemo(
@@ -70,14 +65,10 @@ export function CostosFijos() {
   const updateMyData = (rowIndex, columnId, value) => {
     // We also turn on the flag to not reset the page
     setSkipPageReset(true)
-    action({
-      editRow: { rowIndex: rowIndex, columnId: columnId, value: value },
-    })
   }
 
   // lambda usado por la tabla para eliminar datos al state de la tabla
   const deleteData = (row) => {
-    action({ deleteRow: row.id })
   }
 
   return (
