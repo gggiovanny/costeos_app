@@ -93,7 +93,7 @@ export function CostosFijos() {
             fields={fields}
             register={register}
             handleSubmit={handleSubmit}
-            onSubmit={mutationCostoFijo.mutate}
+            postMutation={mutationCostoFijo}
             errors={errors}
           />
         </div>

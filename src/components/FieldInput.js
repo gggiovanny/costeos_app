@@ -9,6 +9,7 @@ export function FieldInput({
   icon,
   errors,
   inputRef,
+  onFocus = null
 }) {
   const showError = errors[name]
   return (
@@ -21,6 +22,7 @@ export function FieldInput({
           name={name}
           type={type || 'text'}
           placeholder={placeholder || title}
+          onFocus={onFocus}
         />
         {icon && <span className="icon is-small is-left">{icon}</span>}
       </div>
@@ -39,6 +41,7 @@ FieldInput.propTypes = {
   icon: PropTypes.element,
   errors: PropTypes.object,
   inputRef: PropTypes.any,
+  onFocus: PropTypes.func,
 }
 
 export default FieldInput

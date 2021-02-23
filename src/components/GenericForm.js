@@ -6,21 +6,24 @@ export function GenericForm({
   fields,
   register,
   handleSubmit,
-  onSubmit,
+  postMutation,
   errors,
 }) {
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(postMutation.mutate)}>
         {fields.map((field, index) => (
           <FieldInput
-            inputRef={register({ required: field.required === undefined ? true : field.required })}
+            inputRef={register({
+              required: field.required === undefined ? true : field.required,
+            })}
             title={field.title}
             name={field.name}
             type={field.type}
             icon={field.icon}
             errors={errors}
-            key={field.name+index}
+            key={field.name + index}
+            onFocus={() => postMutation.reset()}
           />
         ))}
         <input
@@ -28,6 +31,13 @@ export function GenericForm({
           type="submit"
           value="Agregar"
         />
+        <>
+          {postMutation.isLoading ? 'Agregando...' : null}
+          {postMutation.isError
+            ? 'Ocurrió un error:' + postMutation.error.message
+            : null}
+          {postMutation.isSuccess ? 'Éxito al agregar!' : null}
+        </>
       </form>
     </div>
   )
