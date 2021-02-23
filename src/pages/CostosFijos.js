@@ -1,29 +1,23 @@
-import React, { useMemo, useState, useEffect } from 'react'
+import React, { useMemo } from 'react'
 import { GenericForm } from '../components/GenericForm'
 import { BasicTable } from '../components/BasicTable'
 import { useForm } from 'react-hook-form'
-import { useStateMachine } from 'little-state-machine'
-import { costos_fijos_actions } from '../providers/actions'
 import { FaClipboardList } from 'react-icons/fa'
 import { MdAttachMoney } from 'react-icons/md'
+import { useQuery } from 'react-query'
+import costeosapi from '../providers/costeosapi'
 
+let getCostoFijo = () => costeosapi.get('costosfijos').then((res) => res.data)
+
+let postCostoFijo = () => {}
 
 export function CostosFijos() {
   // Inicializando el hook para el formulario
   const { register, handleSubmit, errors, reset } = useForm()
   // lambda usado por el formulario para agregar datos al state de la tabla
-  const addData = (data) => {
-  }
+  const addData = (data) => {}
 
-  const [data, setData] = useState([])
-  useEffect(() => {
-    fetch('http://localhost:8000/costosfijos/')
-    .then(res => res.json())
-    .then((res) => {
-      setData(res)
-      console.log(res);
-    })
-  }, [])
+  const { isLoading, error, data } = useQuery('costos_fijos', getCostoFijo)
 
   // Campos del formulario
   const fields = React.useMemo(
@@ -78,8 +72,11 @@ export function CostosFijos() {
   }
 
   // lambda usado por la tabla para eliminar datos al state de la tabla
-  const deleteData = (row) => {
-  }
+  const deleteData = (row) => {}
+
+  if (isLoading) return 'Loading...'
+
+  if (error) return 'An error has occurred: ' + error.message
 
   return (
     <div className="columns is-variable is-3">
