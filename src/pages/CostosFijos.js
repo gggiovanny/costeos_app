@@ -4,20 +4,27 @@ import { BasicTable } from '../components/BasicTable'
 import { useForm } from 'react-hook-form'
 import { FaClipboardList } from 'react-icons/fa'
 import { MdAttachMoney } from 'react-icons/md'
-import { useQuery } from 'react-query'
+import { useQuery, useMutation, useQueryClient } from 'react-query'
 import costeosapi from '../providers/costeosapi'
 
 let getCostoFijo = () => costeosapi.get('costosfijos').then((res) => res.data)
-
-let postCostoFijo = () => {}
+let postCostoFijo = (costofijo) => costeosapi.post('costosfijos', costofijo)
 
 export function CostosFijos() {
+  // Inicializando react-query
+  const queryClient = useQueryClient()
   // Inicializando el hook para el formulario
   const { register, handleSubmit, errors, reset } = useForm()
-  // lambda usado por el formulario para agregar datos al state de la tabla
-  const addData = (data) => {}
 
+  // obteniendo datos de costos fijos
   const { isLoading, error, data } = useQuery('costos_fijos', getCostoFijo)
+  // creando mutacion para agregar costosfijos
+  const mutationCostoFijo = useMutation(postCostoFijo, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('costos_fijos')
+      reset()
+    },
+  })
 
   // Campos del formulario
   const fields = React.useMemo(
@@ -86,7 +93,7 @@ export function CostosFijos() {
             fields={fields}
             register={register}
             handleSubmit={handleSubmit}
-            onSubmit={addData}
+            onSubmit={mutationCostoFijo.mutate}
             errors={errors}
           />
         </div>
