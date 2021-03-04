@@ -20,6 +20,7 @@ export function GenericForm({
             title={field.title}
             name={field.name}
             type={field.type}
+            allowDecimals={field.allowDecimals}
             icon={field.icon}
             errors={errors}
             key={field.name + index}

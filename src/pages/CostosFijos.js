@@ -50,6 +50,7 @@ export function CostosFijos() {
         title: 'Costo mensual',
         name: 'costo_mensual',
         type: 'number',
+        allowDecimals: true,
         icon: <MdAttachMoney />,
       },
     ],

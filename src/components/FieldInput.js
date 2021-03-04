@@ -9,7 +9,8 @@ export function FieldInput({
   icon,
   errors,
   inputRef,
-  onFocus = null
+  onFocus = null,
+  allowDecimals = false,
 }) {
   const showError = errors[name]
   return (
@@ -23,6 +24,7 @@ export function FieldInput({
           type={type || 'text'}
           placeholder={placeholder || title}
           onFocus={onFocus}
+          step={allowDecimals ? 'any' : '1'}
         />
         {icon && <span className="icon is-small is-left">{icon}</span>}
       </div>
@@ -36,6 +38,7 @@ export function FieldInput({
 FieldInput.propTypes = {
   name: PropTypes.string.isRequired,
   type: PropTypes.oneOf(['text', 'email', 'password', 'number']),
+  allowDecimals: PropTypes.bool,
   title: PropTypes.string,
   placeholder: PropTypes.string,
   icon: PropTypes.element,
