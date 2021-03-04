@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/costeos_app/static/css/main.ac07a9dd.chunk.css",
-    "main.js": "/costeos_app/static/js/main.b7999a2d.chunk.js",
-    "main.js.map": "/costeos_app/static/js/main.b7999a2d.chunk.js.map",
+    "main.js": "/costeos_app/static/js/main.67e86f02.chunk.js",
+    "main.js.map": "/costeos_app/static/js/main.67e86f02.chunk.js.map",
     "runtime-main.js": "/costeos_app/static/js/runtime-main.b12276ad.js",
     "runtime-main.js.map": "/costeos_app/static/js/runtime-main.b12276ad.js.map",
     "static/js/2.a95e5189.chunk.js": "/costeos_app/static/js/2.a95e5189.chunk.js",
@@ -15,6 +15,6 @@
     "static/js/runtime-main.b12276ad.js",
     "static/js/2.a95e5189.chunk.js",
     "static/css/main.ac07a9dd.chunk.css",
-    "static/js/main.b7999a2d.chunk.js"
+    "static/js/main.67e86f02.chunk.js"
   ]
 }
