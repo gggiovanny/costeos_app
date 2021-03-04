@@ -1,20 +1,20 @@
 {
   "files": {
     "main.css": "/costeos_app/static/css/main.ac07a9dd.chunk.css",
-    "main.js": "/costeos_app/static/js/main.d3193b09.chunk.js",
-    "main.js.map": "/costeos_app/static/js/main.d3193b09.chunk.js.map",
+    "main.js": "/costeos_app/static/js/main.b7999a2d.chunk.js",
+    "main.js.map": "/costeos_app/static/js/main.b7999a2d.chunk.js.map",
     "runtime-main.js": "/costeos_app/static/js/runtime-main.b12276ad.js",
     "runtime-main.js.map": "/costeos_app/static/js/runtime-main.b12276ad.js.map",
-    "static/js/2.dc9fef2c.chunk.js": "/costeos_app/static/js/2.dc9fef2c.chunk.js",
-    "static/js/2.dc9fef2c.chunk.js.map": "/costeos_app/static/js/2.dc9fef2c.chunk.js.map",
+    "static/js/2.a95e5189.chunk.js": "/costeos_app/static/js/2.a95e5189.chunk.js",
+    "static/js/2.a95e5189.chunk.js.map": "/costeos_app/static/js/2.a95e5189.chunk.js.map",
     "index.html": "/costeos_app/index.html",
     "static/css/main.ac07a9dd.chunk.css.map": "/costeos_app/static/css/main.ac07a9dd.chunk.css.map",
-    "static/js/2.dc9fef2c.chunk.js.LICENSE.txt": "/costeos_app/static/js/2.dc9fef2c.chunk.js.LICENSE.txt"
+    "static/js/2.a95e5189.chunk.js.LICENSE.txt": "/costeos_app/static/js/2.a95e5189.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.b12276ad.js",
-    "static/js/2.dc9fef2c.chunk.js",
+    "static/js/2.a95e5189.chunk.js",
     "static/css/main.ac07a9dd.chunk.css",
-    "static/js/main.d3193b09.chunk.js"
+    "static/js/main.b7999a2d.chunk.js"
   ]
 }
