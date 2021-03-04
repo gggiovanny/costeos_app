@@ -14,7 +14,7 @@ import { useStringFormatter } from '../hooks/useStringFormatter'
 
 const EditableCell = ({
   value: initialValue,
-  row: { index },
+  row: { index, original },
   column: { id },
   updateMyData, // This is a custom function that we supplied to our table instance
   money_column, // custom prop passed
@@ -33,7 +33,9 @@ const EditableCell = ({
 
   // We'll only update the external data when the input is blurred
   const onBlur = () => {
-    updateMyData(index, id, value)
+    const updatedrow = original
+    updatedrow[id] = value
+    updateMyData(updatedrow)
     setIsEditing(false)
   }
 
@@ -56,7 +58,7 @@ const EditableCell = ({
         <span>{displayValue}</span>
       ) : (
         <input
-          className='input'
+          className="input"
           value={displayValue}
           onChange={onChange}
           onBlur={onBlur}
@@ -71,7 +73,7 @@ const EditableCell = ({
 const ButtonDelete = ({ row, deleteData, isInEditMode }) => {
   return isInEditMode ? (
     <MdDeleteForever
-      className='has-text-danger'
+      className="has-text-danger"
       onClick={() => {
         deleteData(row)
       }}

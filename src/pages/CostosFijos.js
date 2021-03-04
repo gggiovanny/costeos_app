@@ -9,6 +9,7 @@ import costeosapi from '../providers/costeosapi'
 
 let getCostoFijo = () => costeosapi.get('costosfijos').then((res) => res.data)
 let postCostoFijo = (costofijo) => costeosapi.post('costosfijos', costofijo)
+let putCostoFijo = (updated_costofijo) => costeosapi.put(`costosfijos/${updated_costofijo.id}`, updated_costofijo)
 
 export function CostosFijos() {
   // Inicializando react-query
@@ -73,8 +74,9 @@ export function CostosFijos() {
   // When our cell renderer calls updateMyData, we'll use
   // the rowIndex, columnId and new value to update the
   // original data
-  const updateMyData = (rowIndex, columnId, value) => {
+  const updateMyData = (updatedrow) => {
     // We also turn on the flag to not reset the page
+    putCostoFijo(updatedrow);
     setSkipPageReset(true)
   }
 
