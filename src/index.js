@@ -10,7 +10,7 @@ const queryClient = new QueryClient()
 ReactDOM.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
+      <BrowserRouter basename={'/costeos_app'}>
         <App />
       </BrowserRouter>
     </QueryClientProvider>
