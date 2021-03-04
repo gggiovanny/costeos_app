@@ -7,9 +7,11 @@ import { MdAttachMoney } from 'react-icons/md'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import costeosapi from '../providers/costeosapi'
 
-let getCostoFijo = () => costeosapi.get('costosfijos').then((res) => res.data)
-let postCostoFijo = (costofijo) => costeosapi.post('costosfijos', costofijo)
-let putCostoFijo = (updated_costofijo) => costeosapi.put(`costosfijos/${updated_costofijo.id}`, updated_costofijo)
+const getCostoFijo = () => costeosapi.get('costosfijos').then((res) => res.data)
+const postCostoFijo = (costofijo) => costeosapi.post('costosfijos', costofijo)
+const putCostoFijo = (updated_costofijo) =>
+  costeosapi.put(`costosfijos/${updated_costofijo.id}`, updated_costofijo)
+const deleteCostoFijo = (id) => costeosapi.delete(`costosfijos/${id}`)
 
 export function CostosFijos() {
   // Inicializando react-query
@@ -20,13 +22,20 @@ export function CostosFijos() {
   // obteniendo datos de costos fijos
   const { isLoading, error, data } = useQuery('costos_fijos', getCostoFijo)
   // creando mutacion para agregar costosfijos
-  const mutationCostoFijo = useMutation(postCostoFijo, {
+  const postCostoFijoMut = useMutation(postCostoFijo, {
     onSuccess: () => {
-      queryClient.invalidateQueries('costos_fijos')
-      reset()
+      queryClient.invalidateQueries('costos_fijos') // actualiza los datos de la tabla
+      reset() // reseteando el formulario
     },
   })
   // creando mutación para actualizar costosfijos
+  const putCostdoFijoMut = useMutation(putCostoFijo) // No invalidar querys, porque el backend debe acatar lo que indique el frontend
+  // creando mutación para borrar costosfijos
+  const deleteCostoFijoMut = useMutation(deleteCostoFijo, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('costos_fijos') // actualiza los datos de la tabla
+    },
+  })
 
   // Campos del formulario
   const fields = React.useMemo(
@@ -61,9 +70,6 @@ export function CostosFijos() {
     ],
     []
   )
-  
-  // lambda usado por la tabla para eliminar datos al state de la tabla
-  const deleteData = (row) => {}
 
   if (isLoading) return 'Loading...'
 
@@ -77,7 +83,7 @@ export function CostosFijos() {
             fields={fields}
             register={register}
             handleSubmit={handleSubmit}
-            postMutation={mutationCostoFijo}
+            postMutation={postCostoFijoMut}
             errors={errors}
           />
         </div>
@@ -89,8 +95,8 @@ export function CostosFijos() {
           data={data}
           money_column="costo_mensual"
           showTotal={true}
-          update_callback={putCostoFijo}
-          deleteData={deleteData}
+          update_callback={putCostdoFijoMut.mutate}
+          deleteData={deleteCostoFijoMut.mutate}
         />
       </div>
     </div>
