@@ -98,10 +98,10 @@ export function Insumos() {
     setSkipPageReset(false)
   }, [insumos])
 
-  // When our cell renderer calls updateMyData, we'll use
+  // When our cell renderer calls update_callback, we'll use
   // the rowIndex, columnId and new value to update the
   // original data
-  const updateMyData = (rowIndex, columnId, value) => {
+  const update_callback = (rowIndex, columnId, value) => {
     // We also turn on the flag to not reset the page
     setSkipPageReset(true)
     action({
@@ -133,7 +133,7 @@ export function Insumos() {
           cols={columns}
           data={insumos}
           money_column="valor_de_compra"
-          updateMyData={updateMyData}
+          update_callback={update_callback}
           deleteData={deleteData}
           skipPageReset={skipPageReset}
         />

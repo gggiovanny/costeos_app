@@ -26,6 +26,7 @@ export function CostosFijos() {
       reset()
     },
   })
+  // creando mutación para actualizar costosfijos
 
   // Campos del formulario
   const fields = React.useMemo(
@@ -60,26 +61,7 @@ export function CostosFijos() {
     ],
     []
   )
-  // We need to keep the table from resetting the pageIndex when we
-  // Update data. So we can keep track of that flag with a ref.
-  const [skipPageReset, setSkipPageReset] = React.useState(false)
-
-  // After data chagnes, we turn the flag back off
-  // so that if data actually changes when we're not
-  // editing it, the page is reset
-  React.useEffect(() => {
-    setSkipPageReset(false)
-  }, [data])
-
-  // When our cell renderer calls updateMyData, we'll use
-  // the rowIndex, columnId and new value to update the
-  // original data
-  const updateMyData = (updatedrow) => {
-    // We also turn on the flag to not reset the page
-    putCostoFijo(updatedrow);
-    setSkipPageReset(true)
-  }
-
+  
   // lambda usado por la tabla para eliminar datos al state de la tabla
   const deleteData = (row) => {}
 
@@ -107,9 +89,8 @@ export function CostosFijos() {
           data={data}
           money_column="costo_mensual"
           showTotal={true}
-          updateMyData={updateMyData}
+          update_callback={putCostoFijo}
           deleteData={deleteData}
-          skipPageReset={skipPageReset}
         />
       </div>
     </div>

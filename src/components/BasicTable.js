@@ -16,7 +16,7 @@ const EditableCell = ({
   value: initialValue,
   row: { index, original },
   column: { id },
-  updateMyData, // This is a custom function that we supplied to our table instance
+  updateCallback, // This is a custom function that we supplied to our table instance
   money_column, // custom prop passed
   isInEditMode, // indicate if the cell is in edit mode
 }) => {
@@ -35,7 +35,7 @@ const EditableCell = ({
   const onBlur = () => {
     const updatedrow = original
     updatedrow[id] = value
-    updateMyData(updatedrow)
+    updateCallback(updatedrow)
     setIsEditing(false)
   }
 
@@ -96,9 +96,8 @@ export function BasicTable({
   data,
   money_column,
   showTotal,
-  updateMyData,
+  update_callback,
   deleteData,
-  skipPageReset,
 }) {
   // Calculando total
   const { money } = useStringFormatter()
@@ -126,6 +125,24 @@ export function BasicTable({
     [cols]
   )
 
+  // We need to keep the table from resetting the pageIndex when we
+  // Update data. So we can keep track of that flag with a ref.
+  const [skipPageReset, setSkipPageReset] = React.useState(false)
+  // After data chagnes, we turn the flag back off
+  // so that if data actually changes when we're not
+  // editing it, the page is reset
+  React.useEffect(() => {
+    setSkipPageReset(false)
+  }, [data])
+  // When our cell renderer calls update_callback, we'll use
+  // the rowIndex, columnId and new value to update the
+  // original data
+  const updateCallback = (updatingdrow) => {
+    // We also turn on the flag to not reset the page
+    update_callback(updatingdrow);
+    setSkipPageReset(true)
+  }
+
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
@@ -143,12 +160,12 @@ export function BasicTable({
       defaultColumn,
       // use the skipPageReset option to disable page resetting temporarily
       autoResetPage: !skipPageReset,
-      // updateMyData isn't part of the API, but
+      // update_callback isn't part of the API, but
       // anything we put into these options will
       // automatically be available on the instance.
       // That way we can call this function from our
       // cell renderer!
-      updateMyData,
+      updateCallback,
       deleteData,
       money_column,
       isInEditMode,
@@ -228,9 +245,8 @@ BasicTable.propTypes = {
   data: PropTypes.array.isRequired,
   money_column: PropTypes.string,
   showTotal: PropTypes.bool,
-  updateMyData: PropTypes.func.isRequired,
+  update_callback: PropTypes.func.isRequired,
   deleteData: PropTypes.func.isRequired,
-  skipPageReset: PropTypes.bool.isRequired,
 }
 
 function GlobalFilterInput({
