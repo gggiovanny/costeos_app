@@ -1,5 +1,5 @@
 {
-  "homepage": "/costeos_app/",
+  "homepage": ".",
   "name": "npx",
   "version": "0.1.0",
   "private": true,
