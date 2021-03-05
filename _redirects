@@ -1,0 +1,3 @@
+# necesario porque es una SPA (Single Page Application)
+# redirecciona todas las subrutas al indenx.html (punto de entrada de la SPA)
+/*   /index.html   200
