@@ -19,6 +19,7 @@ const EditableCell = ({
   updateCallback, // This is a custom function that we supplied to our table instance
   money_column, // custom prop passed
   isInEditMode, // indicate if the cell is in edit mode
+  column: { show_normal_callback, show_editing_callback },
 }) => {
   // We need to keep and update the state of the cell normally
   const [value, setValue] = React.useState(initialValue)
@@ -49,8 +50,15 @@ const EditableCell = ({
     setValue(initialValue)
   }, [initialValue])
 
-  const displayValue =
-    id === money_column && !isEditing ? money.format(value) : value
+  show_editing_callback = show_editing_callback || ((item) => item)
+  show_normal_callback = show_normal_callback || ((item) => item)
+
+  let displayValue = isEditing
+    ? show_editing_callback(value)
+    : show_normal_callback(value)
+
+  displayValue =
+    id === money_column && !isEditing ? money.format(value) : displayValue
 
   return (
     <>
@@ -139,7 +147,7 @@ export function BasicTable({
   // original data
   const updateCallback = (updatingdrow) => {
     // We also turn on the flag to not reset the page
-    update_callback(updatingdrow);
+    update_callback(updatingdrow)
     setSkipPageReset(true)
   }
 

@@ -36,7 +36,11 @@ export function Insumos() {
     },
   })
   // creando mutación para actualizar insumos
-  const putInsumosMut = useMutation(putInsumos) // No invalidar querys, porque el backend debe acatar lo que indique el frontend
+  const putInsumosMut = useMutation(putInsumos, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('insumos') // actualiza los datos de la tabla
+    },
+  })
   // creando mutación para borrar insumos
   const deleteInsumosMut = useMutation(deleteInsumos, {
     onSuccess: () => {
@@ -89,6 +93,14 @@ export function Insumos() {
       {
         Header: 'Unidad',
         accessor: 'unidad',
+        show_normal_callback: (item) => {
+          console.log('normal', item.nombre)
+          return item.nombre
+        },
+        show_editing_callback: (item) => {
+          console.log('editing', item.id)
+          return item.id
+        },
       },
       {
         Header: 'Valor de compra',

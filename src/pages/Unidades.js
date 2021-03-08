@@ -59,6 +59,10 @@ export function Unidades() {
   const columns = useMemo(
     () => [
       {
+        Header: 'ID',
+        accessor: 'id',
+      },
+      {
         Header: 'Nombre',
         accessor: 'nombre',
       },
