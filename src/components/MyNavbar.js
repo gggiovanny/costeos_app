@@ -22,7 +22,7 @@ export const MyNavbar = () => {
         <div className="navbar-start">
           <Link className="navbar-item" to="/costos-fijos">Costos fijos</Link>
           <Link className="navbar-item" to="/unidades">Unidades</Link>
-          <Link className="navbar-item" to="/insumos_">Insumos</Link>
+          <Link className="navbar-item" to="/insumos">Insumos</Link>
           <Link className="navbar-item" to="/recetas">Recetas</Link>
           <Link className="navbar-item" to="/reporte">Reporte</Link>
         </div>

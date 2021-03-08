@@ -1,54 +1,64 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { GenericForm } from '../components/GenericForm'
-import { useForm } from 'react-hook-form'
-import { useStateMachine } from 'little-state-machine'
-import { insumos_actions } from '../providers/actions'
 import { BasicTable } from '../components/BasicTable'
-import { GiMeat } from 'react-icons/gi'
+import { useForm } from 'react-hook-form'
+import { HiTag } from 'react-icons/hi'
 import { MdAttachMoney } from 'react-icons/md'
-import { AiOutlineNumber } from 'react-icons/ai'
-import { AiFillTag } from 'react-icons/ai'
+import { FaRulerVertical } from 'react-icons/fa'
 import { FaTrashAlt } from 'react-icons/fa'
+import { useQuery, useMutation, useQueryClient } from 'react-query'
+import costeosapi from '../providers/costeosapi'
 
+const getInsumos = () => costeosapi.get('insumos').then((res) => res.data)
+const postInsumos = (insumos) => costeosapi.post('insumos', insumos)
+const putInsumos = (updated_insumos) =>
+  costeosapi.put(`insumos/${updated_insumos.id}`, updated_insumos)
+const deleteInsumos = (id) => costeosapi.delete(`insumos/${id}`)
 
 export function Insumos() {
-  // Inicializando el manejador global del state para agregar y editar elementos
-  const {
-    action,
-    state: { insumos },
-  } = useStateMachine(insumos_actions)
+  // Inicializando react-query
+  const queryClient = useQueryClient()
   // Inicializando el hook para el formulario
   const { register, handleSubmit, errors, reset } = useForm()
-  // lambda usado por el formulario para agregar datos al state de la tabla
-  const addData = (data) => {
-    action({ addRow: data })
-    reset()
-  }
+
+  // obteniendo datos de insumos
+  const { isLoading, error, data } = useQuery('insumos', getInsumos)
+  // creando mutacion para agregar insumos
+  const postInsumosMut = useMutation(postInsumos, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('insumos') // actualiza los datos de la tabla
+      reset() // reseteando el formulario
+    },
+  })
+  // creando mutación para actualizar insumos
+  const putInsumosMut = useMutation(putInsumos) // No invalidar querys, porque el backend debe acatar lo que indique el frontend
+  // creando mutación para borrar insumos
+  const deleteInsumosMut = useMutation(deleteInsumos, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('insumos') // actualiza los datos de la tabla
+    },
+  })
+
+  // Campos del formulario
   const fields = React.useMemo(
     () => [
       {
-        title: 'Insumo',
-        name: 'insumo',
+        title: 'Nombre',
+        name: 'nombre',
         type: 'text',
-        icon: <GiMeat />,
+        icon: <HiTag />,
+      },
+      {
+        title: 'Unidad',
+        name: 'unidad',
+        type: 'number',
+        icon: <FaRulerVertical />,
       },
       {
         title: 'Valor de compra',
         name: 'valor_de_compra',
         type: 'number',
         icon: <MdAttachMoney />,
-      },
-      {
-        title: 'Cantidad',
-        name: 'cantidad',
-        type: 'number',
-        icon: <AiOutlineNumber />,
-      },
-      {
-        title: 'Unidad',
-        name: 'unidad',
-        type: 'text',
-        icon: <AiFillTag />,
       },
       {
         title: 'Merma',
@@ -61,23 +71,19 @@ export function Insumos() {
   )
 
   // Definiendo columnas de la tabla
-  const columns = React.useMemo(
+  const columns = useMemo(
     () => [
       {
-        Header: 'Insumo',
-        accessor: 'insumo',
-      },
-      {
-        Header: 'Valor de compra',
-        accessor: 'valor_de_compra',
-      },
-      {
-        Header: 'Cantidad',
-        accessor: 'cantidad',
+        Header: 'Nombre',
+        accessor: 'nombre',
       },
       {
         Header: 'Unidad',
         accessor: 'unidad',
+      },
+      {
+        Header: 'Valor de compra',
+        accessor: 'valor_de_compra',
       },
       {
         Header: 'Merma',
@@ -87,32 +93,9 @@ export function Insumos() {
     []
   )
 
-  // We need to keep the table from resetting the pageIndex when we
-  // Update data. So we can keep track of that flag with a ref.
-  const [skipPageReset, setSkipPageReset] = React.useState(false)
+  if (isLoading) return 'Loading...'
 
-  // After data chagnes, we turn the flag back off
-  // so that if data actually changes when we're not
-  // editing it, the page is reset
-  React.useEffect(() => {
-    setSkipPageReset(false)
-  }, [insumos])
-
-  // When our cell renderer calls update_callback, we'll use
-  // the rowIndex, columnId and new value to update the
-  // original data
-  const update_callback = (rowIndex, columnId, value) => {
-    // We also turn on the flag to not reset the page
-    setSkipPageReset(true)
-    action({
-      editRow: { rowIndex: rowIndex, columnId: columnId, value: value },
-    })
-  }
-
-  // lambda usado por la tabla para eliminar datos al state de la tabla
-  const deleteData = (row) => {
-    action({ deleteRow: row.id })
-  }
+  if (error) return 'An error has occurred: ' + error.message
 
   return (
     <div className="columns is-variable is-3">
@@ -122,7 +105,7 @@ export function Insumos() {
             fields={fields}
             register={register}
             handleSubmit={handleSubmit}
-            onSubmit={addData}
+            postMutation={postInsumosMut}
             errors={errors}
           />
         </div>
@@ -131,11 +114,10 @@ export function Insumos() {
         <BasicTable
           title="Insumos"
           cols={columns}
-          data={insumos}
+          data={data}
           money_column="valor_de_compra"
-          update_callback={update_callback}
-          deleteData={deleteData}
-          skipPageReset={skipPageReset}
+          update_callback={putInsumosMut.mutate}
+          deleteData={deleteInsumosMut.mutate}
         />
       </div>
     </div>
