@@ -26,7 +26,7 @@ export function FieldInput({
           onFocus={onFocus}
           step={allowDecimals ? 'any' : '1'}
         />
-        {icon && <span className="icon is-small is-left">{icon}</span>}
+        {icon && <span className="icon is-small is-left" style={{zIndex: 0}}>{icon}</span>}
       </div>
       {showError && (
         <p className="help is-danger">Falta agregar {title.toLowerCase()}.</p>
@@ -46,5 +46,3 @@ FieldInput.propTypes = {
   inputRef: PropTypes.any,
   onFocus: PropTypes.func,
 }
-
-export default FieldInput

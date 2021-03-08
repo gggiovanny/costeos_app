@@ -1,5 +1,5 @@
 import React from 'react'
-import FieldInput from './FieldInput'
+import { FieldInput } from './FieldInput'
 import PropTypes from 'prop-types'
 import { FieldSelect } from './FieldSelect'
 
@@ -15,7 +15,6 @@ export function GenericForm({
     let newdata = {}
     for (const [key, val] of Object.entries(data))
       newdata[key] = typeof val === 'object' ? val.value : val
-    console.log(newdata);
     postMutation.mutate(newdata)
     return data
   }
