@@ -8,18 +8,23 @@ import { FaRulerVertical } from 'react-icons/fa'
 import { FaTrashAlt } from 'react-icons/fa'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import costeosapi from '../providers/costeosapi'
+import { getUnidades } from './Unidades'
 
 const getInsumos = () => costeosapi.get('insumos').then((res) => res.data)
 const postInsumos = (insumos) => costeosapi.post('insumos', insumos)
 const putInsumos = (updated_insumos) =>
   costeosapi.put(`insumos/${updated_insumos.id}`, updated_insumos)
 const deleteInsumos = (id) => costeosapi.delete(`insumos/${id}`)
+const getUnidadesSelect = () =>
+  getUnidades().then((data) =>
+    data.map((uni) => ({ value: uni.id, label: uni.nombre }))
+  )
 
 export function Insumos() {
   // Inicializando react-query
   const queryClient = useQueryClient()
   // Inicializando el hook para el formulario
-  const { register, handleSubmit, errors, reset } = useForm()
+  const { register, handleSubmit, errors, reset, control } = useForm()
 
   // obteniendo datos de insumos
   const { isLoading, error, data } = useQuery('insumos', getInsumos)
@@ -38,6 +43,8 @@ export function Insumos() {
       queryClient.invalidateQueries('insumos') // actualiza los datos de la tabla
     },
   })
+  // creando react-query para obtener unidades
+  const unidades = useQuery('unidades', getUnidadesSelect)
 
   // Campos del formulario
   const fields = React.useMemo(
@@ -51,23 +58,25 @@ export function Insumos() {
       {
         title: 'Unidad',
         name: 'unidad',
-        type: 'number',
-        icon: <FaRulerVertical />,
+        type: 'select',
+        data: unidades.data,
       },
       {
         title: 'Valor de compra',
         name: 'valor_de_compra',
         type: 'number',
+        allowDecimals: true,
         icon: <MdAttachMoney />,
       },
       {
         title: 'Merma',
         name: 'merma',
         type: 'number',
+        allowDecimals: true,
         icon: <FaTrashAlt />,
       },
     ],
-    []
+    [unidades.data]
   )
 
   // Definiendo columnas de la tabla
@@ -107,6 +116,7 @@ export function Insumos() {
             handleSubmit={handleSubmit}
             postMutation={postInsumosMut}
             errors={errors}
+            control={control}
           />
         </div>
       </div>

@@ -7,7 +7,7 @@ import { MdAttachMoney } from 'react-icons/md'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import costeosapi from '../providers/costeosapi'
 
-const getCostoFijo = () => costeosapi.get('costosfijos').then((res) => res.data)
+const getCostosFijos = () => costeosapi.get('costosfijos').then((res) => res.data)
 const postCostoFijo = (costofijo) => costeosapi.post('costosfijos', costofijo)
 const putCostoFijo = (updated_costofijo) =>
   costeosapi.put(`costosfijos/${updated_costofijo.id}`, updated_costofijo)
@@ -20,7 +20,7 @@ export function CostosFijos() {
   const { register, handleSubmit, errors, reset } = useForm()
 
   // obteniendo datos de costos fijos
-  const { isLoading, error, data } = useQuery('costos_fijos', getCostoFijo)
+  const { isLoading, error, data } = useQuery('costos_fijos', getCostosFijos)
   // creando mutacion para agregar costosfijos
   const postCostoFijoMut = useMutation(postCostoFijo, {
     onSuccess: () => {

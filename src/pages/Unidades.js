@@ -6,7 +6,7 @@ import { HiTag, HiMinusCircle } from 'react-icons/hi'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import costeosapi from '../providers/costeosapi'
 
-const getUnidad = () => costeosapi.get('unidades').then((res) => res.data)
+export const getUnidades = () => costeosapi.get('unidades').then((res) => res.data)
 const postUnidad = (unidad) => costeosapi.post('unidades', unidad)
 const putUnidad = (updated_unidad) =>
   costeosapi.put(`unidades/${updated_unidad.id}`, updated_unidad)
@@ -19,7 +19,7 @@ export function Unidades() {
   const { register, handleSubmit, errors, reset } = useForm()
 
   // obteniendo datos de unidades
-  const { isLoading, error, data } = useQuery('unidades', getUnidad)
+  const { isLoading, error, data } = useQuery('unidades', getUnidades)
   // creando mutacion para agregar unidades
   const postUnidadMut = useMutation(postUnidad, {
     onSuccess: () => {
