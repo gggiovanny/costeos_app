@@ -6,9 +6,13 @@ export function Panel({ title, tabs, children, colorClass, headerButton }) {
     <div>
       <nav className={'panel ' + (colorClass || 'is-primary')}>
         <div className="panel-heading">
-          <nav className="level">
-            <span className="level-left">{title}</span>
-            <span className="level-right">{headerButton && headerButton}</span>
+          <nav className="level is-mobile">
+            <span className="level-left">
+              <div className="level-item">{title}</div>
+            </span>
+            <span className="level-right">
+              <div className="level-item">{headerButton && headerButton}</div>
+            </span>
           </nav>
         </div>
         {tabs && (
