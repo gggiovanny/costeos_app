@@ -1,41 +1,57 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useEffect, useState } from 'react'
 import { GenericForm } from '../components/GenericForm'
 import { BasicTable } from '../components/BasicTable'
 import { useForm } from 'react-hook-form'
 import { FaClipboardList } from 'react-icons/fa'
 import { MdAttachMoney } from 'react-icons/md'
-import { useQuery, useMutation, useQueryClient } from 'react-query'
-import costeosapi from '../providers/costeosapi'
+import * as Database from '../providers/RxDB/Database'
 
-const getCostosFijos = () => costeosapi.get('costosfijos').then((res) => res.data)
-const postCostoFijo = (costofijo) => costeosapi.post('costosfijos', costofijo)
-const putCostoFijo = (updated_costofijo) =>
-  costeosapi.put(`costosfijos/${updated_costofijo.id}`, updated_costofijo)
-const deleteCostoFijo = (id) => costeosapi.delete(`costosfijos/${id}`)
+const subs = []
+
+const editCostoFijo = (costofijo) => console.log(costofijo)
+const deleteCostoFijo = (costofijo) => console.log(costofijo)
 
 export function CostosFijos() {
-  // Inicializando react-query
-  const queryClient = useQueryClient()
   // Inicializando el hook para el formulario
   const { register, handleSubmit, errors, reset } = useForm()
 
   // obteniendo datos de costos fijos
-  const { isLoading, error, data } = useQuery('costos_fijos', getCostosFijos)
-  // creando mutacion para agregar costosfijos
-  const postCostoFijoMut = useMutation(postCostoFijo, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('costos_fijos') // actualiza los datos de la tabla
-      reset() // reseteando el formulario
-    },
-  })
-  // creando mutación para actualizar costosfijos
-  const putCostdoFijoMut = useMutation(putCostoFijo) // No invalidar querys, porque el backend debe acatar lo que indique el frontend
-  // creando mutación para borrar costosfijos
-  const deleteCostoFijoMut = useMutation(deleteCostoFijo, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('costos_fijos') // actualiza los datos de la tabla
-    },
-  })
+  const [costosfijos, setCostosfijos] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    (async () => {
+      const db = await Database.get()
+      const sub = db.costosfijos
+        .find({
+          selector: {},
+          sort: [{ concepto: 'asc' }],
+        })
+        .$.subscribe((data) => {
+          console.log('Actualizando... CostosFijos.js ~ line 20 ~ data', data)
+          if (!data) return
+          setCostosfijos(data)
+          setIsLoading(false)
+        })
+      subs.push(sub)
+    })()
+    return () => {
+      subs.forEach((sub) => sub.unsubscribe())
+    }
+  }, [])
+
+
+  //
+  const addCostoFijo = async (costofijo) => {
+    console.log('🚀 ~ file: CostosFijos.js ~ line 52 ~ costofijo', costofijo)
+    const db = await Database.get()
+    try {
+      await db.costosfijos.insert(costofijo)
+    } catch (error) {
+      console.warn(error);
+    }
+    reset()
+  }
 
   // Campos del formulario
   const fields = React.useMemo(
@@ -74,8 +90,6 @@ export function CostosFijos() {
 
   if (isLoading) return 'Loading...'
 
-  if (error) return 'An error has occurred: ' + error.message
-
   return (
     <div className="columns is-variable is-3">
       <div className="column">
@@ -84,7 +98,7 @@ export function CostosFijos() {
             fields={fields}
             register={register}
             handleSubmit={handleSubmit}
-            postMutation={postCostoFijoMut}
+            onSubmit={addCostoFijo}
             errors={errors}
           />
         </div>
@@ -93,11 +107,11 @@ export function CostosFijos() {
         <BasicTable
           title="Costos Fijos"
           cols={columns}
-          data={data}
+          data={costosfijos}
           money_column="costo_mensual"
           showTotal={true}
-          update_callback={putCostdoFijoMut.mutate}
-          deleteData={deleteCostoFijoMut.mutate}
+          update_callback={editCostoFijo}
+          deleteData={deleteCostoFijo}
         />
       </div>
     </div>

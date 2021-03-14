@@ -7,7 +7,7 @@ export function GenericForm({
   fields,
   register,
   handleSubmit,
-  postMutation,
+  onSubmit,
   errors,
   control = null,
 }) {
@@ -15,7 +15,7 @@ export function GenericForm({
     let newdata = {}
     for (const [key, val] of Object.entries(data))
       newdata[key] = typeof val === 'object' ? val.value : val
-    postMutation.mutate(newdata)
+      onSubmit(newdata)
     return data
   }
 
@@ -34,7 +34,6 @@ export function GenericForm({
                 name={field.name}
                 errors={errors}
                 key={field.name + index}
-                onFocus={() => postMutation.reset()}
                 data={field.data}
               />
             )
@@ -51,7 +50,6 @@ export function GenericForm({
                 icon={field.icon}
                 errors={errors}
                 key={field.name + index}
-                onFocus={() => postMutation.reset()}
               />
             )
         })}
@@ -60,13 +58,6 @@ export function GenericForm({
           type="submit"
           value="Agregar"
         />
-        <>
-          {postMutation.isLoading ? 'Agregando...' : null}
-          {postMutation.isError
-            ? 'Ocurrió un error:' + postMutation.error.message
-            : null}
-          {postMutation.isSuccess ? 'Éxito al agregar!' : null}
-        </>
       </form>
     </div>
   )
