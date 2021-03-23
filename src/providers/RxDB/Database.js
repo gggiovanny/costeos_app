@@ -53,6 +53,7 @@ const _create = async () => {
   db.collections.costosfijos.preInsert((data) => {
     // cada que se inserta un nuevo elemento, crear automáticamente una id unica
     data.id = uuidv4()
+    data.timestamp = new Date().getTime().toString()
   }, false)
 
   // sync

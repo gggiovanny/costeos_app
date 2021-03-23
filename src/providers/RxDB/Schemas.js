@@ -14,6 +14,10 @@ export const costofijoSchema = {
     costo_mensual: {
       type: 'number',
     },
+    timestamp: {
+      type: 'string',
+    },
   },
   required: ['costo_mensual'],
+  indexes: ['id', 'timestamp'],
 }

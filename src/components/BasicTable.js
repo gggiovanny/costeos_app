@@ -271,8 +271,8 @@ BasicTable.propTypes = {
   data: PropTypes.array.isRequired,
   money_column: PropTypes.string,
   showTotal: PropTypes.bool,
-  update_callback: PropTypes.func.isRequired,
-  deleteData: PropTypes.func.isRequired,
+  update_callback: PropTypes.func,
+  deleteData: PropTypes.func,
   rxdbMode: PropTypes.bool,
 }
 

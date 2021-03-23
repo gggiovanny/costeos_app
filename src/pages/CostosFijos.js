@@ -19,6 +19,7 @@ export function CostosFijos() {
   const [costosfijos, setCostosfijos] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
+  // usando custom hook para hacer la suscripcion
   useRxSubscribe(
     'costosfijos',
     {
