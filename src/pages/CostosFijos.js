@@ -6,6 +6,7 @@ import { FaClipboardList } from 'react-icons/fa'
 import { MdAttachMoney } from 'react-icons/md'
 import * as Database from '../providers/RxDB/Database'
 import { toast } from 'react-toastify'
+import { useRxInsert } from '../hooks/useRxInsert'
 
 const subs = []
 
@@ -36,18 +37,8 @@ export function CostosFijos() {
     }
   }, [])
 
-  //
-  const addCostoFijo = async (costofijo) => {
-    const db = await Database.get()
-    try {
-      await db.costosfijos.insert(costofijo)
-    } catch (error) {
-      if (error.rxdb)
-        toast.error(`Ya existe un registro para '${error.parameters.id}'`)
-      else console.error(error)
-    }
-    reset()
-  }
+  // usando custom hook para hacer el insert
+  const addCostoFijo = useRxInsert('costosfijos', reset)
 
   // Campos del formulario
   const fields = React.useMemo(
