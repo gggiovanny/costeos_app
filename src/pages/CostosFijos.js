@@ -1,11 +1,9 @@
-import React, { useMemo, useEffect, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { GenericForm } from '../components/GenericForm'
 import { BasicTable } from '../components/BasicTable'
 import { useForm } from 'react-hook-form'
 import { FaClipboardList } from 'react-icons/fa'
 import { MdAttachMoney } from 'react-icons/md'
-import * as Database from '../providers/RxDB/Database'
-import { toast } from 'react-toastify'
 import { useRxInsert } from '../hooks/useRxInsert'
 import { useRxSubscribe } from '../hooks/useRxSubscribe'
 
@@ -15,7 +13,7 @@ export function CostosFijos() {
   // Inicializando el hook para el formulario
   const { register, handleSubmit, errors, reset } = useForm()
 
-  // obteniendo datos de costos fijos
+  // creando elementos del estado
   const [costosfijos, setCostosfijos] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
