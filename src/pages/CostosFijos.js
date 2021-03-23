@@ -16,7 +16,9 @@ const editCostoFijo = async (id, value, original) => {
     $set: updatedfield,
   })
 }
-const deleteCostoFijo = (costofijo) => console.log(costofijo)
+const deleteCostoFijo = (todelete) => {
+  todelete.remove()
+}
 
 export function CostosFijos() {
   // Inicializando el hook para el formulario

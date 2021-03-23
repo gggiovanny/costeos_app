@@ -81,7 +81,7 @@ const ButtonDelete = ({ row, deleteData, isInEditMode }) => {
     <MdDeleteForever
       className="has-text-danger"
       onClick={() => {
-        deleteData(row.original.id)
+        deleteData(row.original)
       }}
       style={{ cursor: 'pointer' }}
       size={32}
