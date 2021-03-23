@@ -1,8 +1,9 @@
-import { createRxDatabase, removeRxDatabase,addRxPlugin } from 'rxdb'
+import { createRxDatabase, removeRxDatabase, addRxPlugin } from 'rxdb'
 import { costofijoSchema } from './Schemas'
 import { RxDBLeaderElectionPlugin } from 'rxdb/plugins/leader-election'
 import { RxDBReplicationPlugin } from 'rxdb/plugins/replication'
 import { RxDBNoValidatePlugin } from 'rxdb/plugins/no-validate'
+import { v4 as uuidv4 } from 'uuid'
 
 addRxPlugin(require('pouchdb-adapter-idb'))
 addRxPlugin(require('pouchdb-adapter-http')) // enable syncing over http
@@ -24,9 +25,9 @@ let dbPromise = null
 
 const _create = async () => {
   console.log('DatabaseService: creating database..')
-  
-  // en modo desarrollo, borrar la base de datos anterior 
-  // if(process.env.NODE_ENV === 'development')
+
+  // // en modo desarrollo, borrar la base de datos anterior
+  // if (process.env.NODE_ENV === 'development')
   //   await removeRxDatabase('costeosapp', 'idb')
 
   const db = await createRxDatabase({
@@ -45,6 +46,12 @@ const _create = async () => {
   // create collections
   console.log('DatabaseService: create collections')
   await Promise.all(collections.map((colData) => db.collection(colData)))
+
+  // hooks
+  console.log('DatabaseService: add hooks')
+  db.collections.costosfijos.preInsert((data) => {
+    data.id = uuidv4()
+  }, false)
 
   // sync
   console.log('DatabaseService: sync')

@@ -28,7 +28,8 @@
     "react-toastify": "^7.0.3",
     "rxdb": "^9.15.0",
     "rxjs": "^6.6.6",
-    "styled-components": "^5.2.1"
+    "styled-components": "^5.2.1",
+    "uuid": "^8.3.2"
   },
   "scripts": {
     "start": "react-scripts start",

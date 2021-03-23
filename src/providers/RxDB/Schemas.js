@@ -4,9 +4,12 @@ export const costofijoSchema = {
   version: 0,
   type: 'object',
   properties: {
-    concepto: {
+    id: {
       type: 'string',
       primary: true,
+    },
+    concepto: {
+      type: 'string',
     },
     costo_mensual: {
       type: 'number',

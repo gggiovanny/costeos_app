@@ -32,7 +32,6 @@ export function CostosFijos() {
       const sub = db.costosfijos
         .find({
           selector: {},
-          sort: [{ concepto: 'asc' }],
         })
         .$.subscribe((data) => {
           if (!data) return
@@ -52,7 +51,9 @@ export function CostosFijos() {
     try {
       await db.costosfijos.insert(costofijo)
     } catch (error) {
-      toast.error(`Ya existe un registro para '${error.parameters.id}'`)
+      if (error.rxdb)
+        toast.error(`Ya existe un registro para '${error.parameters.id}'`)
+      else console.error(error)
     }
     reset()
   }
