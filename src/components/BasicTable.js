@@ -64,8 +64,8 @@ const EditableCell = ({
   show_normal_callback = show_normal_callback || ((item) => item)
 
   let displayValue = isEditing
-    ? show_editing_callback(value)
-    : show_normal_callback(value)
+    ? show_editing_callback(value, original)
+    : show_normal_callback(value, original)
 
   displayValue =
     id === money_column && !isEditing ? money.format(value) : displayValue

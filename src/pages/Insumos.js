@@ -90,10 +90,11 @@ export function Insumos() {
       {
         Header: 'Unidad',
         accessor: 'unidad',
-        show_normal_callback: (item) => {
-          return item
+        show_normal_callback: (item, original) => {
+          const unidadObj = unidades.find((u) => u.id == item)
+          return unidadObj ? unidadObj.abrev : item
         },
-        show_editing_callback: (item) => {
+        show_editing_callback: (item, original) => {
           return item
         },
       },
@@ -106,7 +107,7 @@ export function Insumos() {
         accessor: 'merma',
       },
     ],
-    []
+    [unidades]
   )
 
   if (isLoading) return 'Loading...'

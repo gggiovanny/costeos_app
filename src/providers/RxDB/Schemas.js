@@ -63,6 +63,7 @@ export const insumosSchema = {
       type: 'string',
     },
     unidad: {
+      ref: 'unidades',
       type: 'string',
     },
     valor_de_compra: {
