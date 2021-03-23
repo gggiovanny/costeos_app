@@ -7,6 +7,7 @@ import { MdAttachMoney } from 'react-icons/md'
 import * as Database from '../providers/RxDB/Database'
 import { toast } from 'react-toastify'
 import { useRxInsert } from '../hooks/useRxInsert'
+import { useRxSubscribe } from '../hooks/useRxSubscribe'
 
 const subs = []
 
@@ -18,24 +19,18 @@ export function CostosFijos() {
   const [costosfijos, setCostosfijos] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
-  useEffect(() => {
-    ;(async () => {
-      const db = await Database.get()
-      const sub = db.costosfijos
-        .find({
-          selector: {},
-        })
-        .$.subscribe((data) => {
-          if (!data) return
-          setCostosfijos(data)
-          setIsLoading(false)
-        })
-      subs.push(sub)
-    })()
-    return () => {
-      subs.forEach((sub) => sub.unsubscribe())
-    }
-  }, [])
+  useRxSubscribe(
+    'costosfijos',
+    {
+      selector: {},
+      sort: [{ timestamp: 'desc' }],
+    },
+    (data) => {
+      setCostosfijos(data)
+      setIsLoading(false)
+    },
+    subs
+  )
 
   // usando custom hook para hacer el insert
   const addCostoFijo = useRxInsert('costosfijos', reset)
