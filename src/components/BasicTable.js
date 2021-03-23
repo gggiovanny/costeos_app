@@ -12,6 +12,18 @@ import { FiEdit } from 'react-icons/fi'
 import { MdDeleteForever } from 'react-icons/md'
 import { useStringFormatter } from '../hooks/useStringFormatter'
 
+const default_rxdb_update_callback = async (id, value, original) => {
+  let updatedfield = {}
+  updatedfield[id] = value
+  await original.update({
+    $set: updatedfield,
+  })
+}
+
+const default_rxdb_delete_callback = (todelete) => {
+  todelete.remove()
+}
+
 const EditableCell = ({
   value: initialValue,
   row: { index, original },
@@ -104,6 +116,7 @@ export function BasicTable({
   showTotal,
   update_callback,
   deleteData,
+  rxdbMode = false,
 }) {
   // Calculando total
   const { money } = useStringFormatter()
@@ -130,6 +143,13 @@ export function BasicTable({
     ],
     [cols]
   )
+
+  // si se activo rxdbMode, poner los callbacks para editar y eliminar por defecto
+  if (rxdbMode) {
+    // si la funcion está definida explicitamente, conservarla, si no, usar las default
+    update_callback = update_callback || default_rxdb_update_callback
+    deleteData = deleteData || default_rxdb_delete_callback
+  }
 
   // We need to keep the table from resetting the pageIndex when we
   // Update data. So we can keep track of that flag with a ref.
@@ -253,6 +273,7 @@ BasicTable.propTypes = {
   showTotal: PropTypes.bool,
   update_callback: PropTypes.func.isRequired,
   deleteData: PropTypes.func.isRequired,
+  rxdbMode: PropTypes.bool,
 }
 
 function GlobalFilterInput({

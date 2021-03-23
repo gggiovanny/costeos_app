@@ -9,17 +9,6 @@ import { toast } from 'react-toastify'
 
 const subs = []
 
-const editCostoFijo = async (id, value, original) => {
-  let updatedfield = {}
-  updatedfield[id] = value
-  await original.update({
-    $set: updatedfield,
-  })
-}
-const deleteCostoFijo = (todelete) => {
-  todelete.remove()
-}
-
 export function CostosFijos() {
   // Inicializando el hook para el formulario
   const { register, handleSubmit, errors, reset } = useForm()
@@ -117,8 +106,7 @@ export function CostosFijos() {
           data={costosfijos}
           money_column="costo_mensual"
           showTotal={true}
-          update_callback={editCostoFijo}
-          deleteData={deleteCostoFijo}
+          rxdbMode={true}
         />
       </div>
     </div>
