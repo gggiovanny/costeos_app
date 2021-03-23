@@ -1,40 +1,36 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { GenericForm } from '../components/GenericForm'
 import { BasicTable } from '../components/BasicTable'
 import { useForm } from 'react-hook-form'
 import { HiTag, HiMinusCircle } from 'react-icons/hi'
-import { useQuery, useMutation, useQueryClient } from 'react-query'
-import costeosapi from '../providers/costeosapi'
+import { useRxInsert } from '../hooks/useRxInsert'
+import { useRxSubscribe } from '../hooks/useRxSubscribe'
 
-export const getUnidades = () => costeosapi.get('unidades').then((res) => res.data)
-const postUnidad = (unidad) => costeosapi.post('unidades', unidad)
-const putUnidad = (updated_unidad) =>
-  costeosapi.put(`unidades/${updated_unidad.id}`, updated_unidad)
-const deleteUnidad = (id) => costeosapi.delete(`unidades/${id}`)
+const subs = []
 
 export function Unidades() {
-  // Inicializando react-query
-  const queryClient = useQueryClient()
   // Inicializando el hook para el formulario
   const { register, handleSubmit, errors, reset } = useForm()
 
-  // obteniendo datos de unidades
-  const { isLoading, error, data } = useQuery('unidades', getUnidades)
-  // creando mutacion para agregar unidades
-  const postUnidadMut = useMutation(postUnidad, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('unidades') // actualiza los datos de la tabla
-      reset() // reseteando el formulario
+  const [unidades, setUnidades] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  // usando custom hook para hacer la suscripcion
+  useRxSubscribe(
+    'unidades',
+    {
+      selector: {},
+      sort: [{ timestamp: 'desc' }],
     },
-  })
-  // creando mutación para actualizar unidades
-  const putUnidadMut = useMutation(putUnidad) // No invalidar querys, porque el backend debe acatar lo que indique el frontend
-  // creando mutación para borrar unidades
-  const deleteUnidadMut = useMutation(deleteUnidad, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('unidades') // actualiza los datos de la tabla
+    (data) => {
+      setUnidades(data)
+      setIsLoading(false)
     },
-  })
+    subs
+  )
+
+  // usando custom hook para hacer el insert
+  const addData = useRxInsert('unidades', reset)
 
   // Campos del formulario
   const fields = React.useMemo(
@@ -59,10 +55,6 @@ export function Unidades() {
   const columns = useMemo(
     () => [
       {
-        Header: 'ID',
-        accessor: 'id',
-      },
-      {
         Header: 'Nombre',
         accessor: 'nombre',
       },
@@ -76,8 +68,6 @@ export function Unidades() {
 
   if (isLoading) return 'Loading...'
 
-  if (error) return 'An error has occurred: ' + error.message
-
   return (
     <div className="columns is-variable is-3">
       <div className="column">
@@ -86,7 +76,7 @@ export function Unidades() {
             fields={fields}
             register={register}
             handleSubmit={handleSubmit}
-            postMutation={postUnidadMut}
+            onSubmit={addData}
             errors={errors}
           />
         </div>
@@ -95,9 +85,8 @@ export function Unidades() {
         <BasicTable
           title="Unidades"
           cols={columns}
-          data={data}
-          update_callback={putUnidadMut.mutate}
-          deleteData={deleteUnidadMut.mutate}
+          data={unidades}
+          rxdbMode={true}
         />
       </div>
     </div>

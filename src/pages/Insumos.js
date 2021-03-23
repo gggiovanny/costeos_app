@@ -8,17 +8,17 @@ import { FaRulerVertical } from 'react-icons/fa'
 import { FaTrashAlt } from 'react-icons/fa'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import costeosapi from '../providers/costeosapi'
-import { getUnidades } from './Unidades'
 
 const getInsumos = () => costeosapi.get('insumos').then((res) => res.data)
 const postInsumos = (insumos) => costeosapi.post('insumos', insumos)
 const putInsumos = (updated_insumos) =>
   costeosapi.put(`insumos/${updated_insumos.id}`, updated_insumos)
 const deleteInsumos = (id) => costeosapi.delete(`insumos/${id}`)
-const getUnidadesSelect = () =>
-  getUnidades().then((data) =>
-    data.map((uni) => ({ value: uni.id, label: uni.nombre }))
-  )
+const getUnidadesSelect = () => {
+  // getUnidades().then((data) =>
+  //   data.map((uni) => ({ value: uni.id, label: uni.nombre }))
+  // )
+}
 
 export function Insumos() {
   // Inicializando react-query

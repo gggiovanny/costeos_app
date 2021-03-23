@@ -1,5 +1,5 @@
 import { createRxDatabase, removeRxDatabase, addRxPlugin } from 'rxdb'
-import { costofijoSchema } from './Schemas'
+import { costofijoSchema, unidadesSchema } from './Schemas'
 import { RxDBLeaderElectionPlugin } from 'rxdb/plugins/leader-election'
 import { RxDBReplicationPlugin } from 'rxdb/plugins/replication'
 import { RxDBNoValidatePlugin } from 'rxdb/plugins/no-validate'
@@ -15,6 +15,11 @@ const collections = [
   {
     name: 'costosfijos',
     schema: costofijoSchema,
+    sync: true,
+  },
+  {
+    name: 'unidades',
+    schema: unidadesSchema,
     sync: true,
   },
 ]
@@ -52,6 +57,11 @@ const _create = async () => {
 
   db.collections.costosfijos.preInsert((data) => {
     // cada que se inserta un nuevo elemento, crear automáticamente una id unica
+    data.id = uuidv4()
+    data.timestamp = new Date().getTime().toString()
+  }, false)
+
+  db.collections.unidades.preInsert((data) => {
     data.id = uuidv4()
     data.timestamp = new Date().getTime().toString()
   }, false)
