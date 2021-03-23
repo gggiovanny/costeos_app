@@ -8,6 +8,8 @@ import { Insumos } from './pages/Insumos'
 import { About } from './pages/About'
 import { NotFound } from './pages/NotFound'
 import { ReactQueryDevtools } from 'react-query/devtools'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function App() {
   return (
@@ -24,6 +26,7 @@ function App() {
         </Switch>
       </div>
       <ReactQueryDevtools initialIsOpen={false} />
+      <ToastContainer position="bottom-center" pauseOnFocusLoss={false} />
     </>
   )
 }

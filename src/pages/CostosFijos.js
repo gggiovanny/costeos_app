@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { FaClipboardList } from 'react-icons/fa'
 import { MdAttachMoney } from 'react-icons/md'
 import * as Database from '../providers/RxDB/Database'
+import { toast } from 'react-toastify'
 
 const subs = []
 
@@ -40,7 +41,6 @@ export function CostosFijos() {
     }
   }, [])
 
-
   //
   const addCostoFijo = async (costofijo) => {
     console.log('🚀 ~ file: CostosFijos.js ~ line 52 ~ costofijo', costofijo)
@@ -48,7 +48,7 @@ export function CostosFijos() {
     try {
       await db.costosfijos.insert(costofijo)
     } catch (error) {
-      console.warn(error);
+      toast.error(`Ya existe un registro para '${error.parameters.id}'`)
     }
     reset()
   }
