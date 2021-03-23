@@ -1,54 +1,51 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { GenericForm } from '../components/GenericForm'
 import { BasicTable } from '../components/BasicTable'
 import { useForm } from 'react-hook-form'
 import { HiTag } from 'react-icons/hi'
 import { MdAttachMoney } from 'react-icons/md'
-import { FaRulerVertical } from 'react-icons/fa'
 import { FaTrashAlt } from 'react-icons/fa'
-import { useQuery, useMutation, useQueryClient } from 'react-query'
-import costeosapi from '../providers/costeosapi'
+import { useRxInsert } from '../hooks/useRxInsert'
+import { useRxSubscribe } from '../hooks/useRxSubscribe'
 
-const getInsumos = () => costeosapi.get('insumos').then((res) => res.data)
-const postInsumos = (insumos) => costeosapi.post('insumos', insumos)
-const putInsumos = (updated_insumos) =>
-  costeosapi.put(`insumos/${updated_insumos.id}`, updated_insumos)
-const deleteInsumos = (id) => costeosapi.delete(`insumos/${id}`)
-const getUnidadesSelect = () => {
-  // getUnidades().then((data) =>
-  //   data.map((uni) => ({ value: uni.id, label: uni.nombre }))
-  // )
-}
+const subs = []
 
 export function Insumos() {
-  // Inicializando react-query
-  const queryClient = useQueryClient()
   // Inicializando el hook para el formulario
   const { register, handleSubmit, errors, reset, control } = useForm()
 
-  // obteniendo datos de insumos
-  const { isLoading, error, data } = useQuery('insumos', getInsumos)
-  // creando mutacion para agregar insumos
-  const postInsumosMut = useMutation(postInsumos, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('insumos') // actualiza los datos de la tabla
-      reset() // reseteando el formulario
+  // creando elementos del estado
+  const [insumos, setInsumos] = useState([])
+  const [unidades, setUnidades] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  // usando custom hook para hacer la suscripcion
+  useRxSubscribe(
+    'insumos',
+    {
+      selector: {},
+      sort: [{ timestamp: 'desc' }],
     },
-  })
-  // creando mutación para actualizar insumos
-  const putInsumosMut = useMutation(putInsumos, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('insumos') // actualiza los datos de la tabla
+    (data) => {
+      setInsumos(data)
+      setIsLoading(false)
     },
-  })
-  // creando mutación para borrar insumos
-  const deleteInsumosMut = useMutation(deleteInsumos, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('insumos') // actualiza los datos de la tabla
+    subs
+  )
+  useRxSubscribe(
+    'unidades',
+    {
+      selector: {},
+      sort: [{ abrev: 'asc' }],
     },
-  })
-  // creando react-query para obtener unidades
-  const unidades = useQuery('unidades', getUnidadesSelect)
+    (data) => {
+      setUnidades(data)
+    },
+    subs
+  )
+
+  // usando custom hook para hacer el insert
+  const addData = useRxInsert('insumos', reset)
 
   // Campos del formulario
   const fields = React.useMemo(
@@ -63,7 +60,7 @@ export function Insumos() {
         title: 'Unidad',
         name: 'unidad',
         type: 'select',
-        data: unidades.data,
+        data: unidades.map((uni) => ({ value: uni.id, label: uni.nombre })),
       },
       {
         title: 'Valor de compra',
@@ -80,7 +77,7 @@ export function Insumos() {
         icon: <FaTrashAlt />,
       },
     ],
-    [unidades.data]
+    [unidades]
   )
 
   // Definiendo columnas de la tabla
@@ -94,12 +91,10 @@ export function Insumos() {
         Header: 'Unidad',
         accessor: 'unidad',
         show_normal_callback: (item) => {
-          console.log('normal', item.nombre)
-          return item.nombre
+          return item
         },
         show_editing_callback: (item) => {
-          console.log('editing', item.id)
-          return item.id
+          return item
         },
       },
       {
@@ -116,8 +111,6 @@ export function Insumos() {
 
   if (isLoading) return 'Loading...'
 
-  if (error) return 'An error has occurred: ' + error.message
-
   return (
     <div className="columns is-variable is-3">
       <div className="column">
@@ -126,7 +119,7 @@ export function Insumos() {
             fields={fields}
             register={register}
             handleSubmit={handleSubmit}
-            postMutation={postInsumosMut}
+            onSubmit={addData}
             errors={errors}
             control={control}
           />
@@ -136,10 +129,9 @@ export function Insumos() {
         <BasicTable
           title="Insumos"
           cols={columns}
-          data={data}
+          data={insumos}
           money_column="valor_de_compra"
-          update_callback={putInsumosMut.mutate}
-          deleteData={deleteInsumosMut.mutate}
+          rxdbMode={true}
         />
       </div>
     </div>

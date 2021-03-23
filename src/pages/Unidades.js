@@ -12,6 +12,7 @@ export function Unidades() {
   // Inicializando el hook para el formulario
   const { register, handleSubmit, errors, reset } = useForm()
 
+  // creando elementos del estado
   const [unidades, setUnidades] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 

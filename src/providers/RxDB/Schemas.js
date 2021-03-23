@@ -19,7 +19,7 @@ export const costofijoSchema = {
     },
   },
   required: ['costo_mensual'],
-  indexes: ['id', 'timestamp'],
+  indexes: ['timestamp'],
 }
 
 export const unidadesSchema = {
@@ -44,4 +44,34 @@ export const unidadesSchema = {
   },
   required: ['nombre'],
   indexes: ['abrev', 'timestamp'],
+}
+
+export const insumosSchema = {
+  title: 'insumos schema',
+  description: 'Registro de insumos',
+  version: 0,
+  type: 'object',
+  properties: {
+    id: {
+      type: 'string',
+      primary: true,
+    },
+    timestamp: {
+      type: 'string',
+    },
+    nombre: {
+      type: 'string',
+    },
+    unidad: {
+      type: 'string',
+    },
+    valor_de_compra: {
+      type: 'string',
+    },
+    merma: {
+      type: 'number',
+    },
+  },
+  required: ['nombre'],
+  indexes: ['timestamp'],
 }

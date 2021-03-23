@@ -1,5 +1,5 @@
 import { createRxDatabase, removeRxDatabase, addRxPlugin } from 'rxdb'
-import { costofijoSchema, unidadesSchema } from './Schemas'
+import { costofijoSchema, unidadesSchema, insumosSchema } from './Schemas'
 import { RxDBLeaderElectionPlugin } from 'rxdb/plugins/leader-election'
 import { RxDBReplicationPlugin } from 'rxdb/plugins/replication'
 import { RxDBNoValidatePlugin } from 'rxdb/plugins/no-validate'
@@ -20,6 +20,11 @@ const collections = [
   {
     name: 'unidades',
     schema: unidadesSchema,
+    sync: true,
+  },
+  {
+    name: 'insumos',
+    schema: insumosSchema,
     sync: true,
   },
 ]
@@ -62,6 +67,11 @@ const _create = async () => {
   }, false)
 
   db.collections.unidades.preInsert((data) => {
+    data.id = uuidv4()
+    data.timestamp = new Date().getTime().toString()
+  }, false)
+
+  db.collections.insumos.preInsert((data) => {
     data.id = uuidv4()
     data.timestamp = new Date().getTime().toString()
   }, false)

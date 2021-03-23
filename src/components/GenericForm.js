@@ -13,10 +13,10 @@ export function GenericForm({
 }) {
   const parseSelectsData = (data) => {
     let newdata = {}
-    for (const [key, val] of Object.entries(data))
+    for (const [key, val] of Object.entries(data)) {
       newdata[key] = typeof val === 'object' ? val.value : val
-      onSubmit(newdata)
-    return data
+    }
+    onSubmit(newdata)
   }
 
   return (
