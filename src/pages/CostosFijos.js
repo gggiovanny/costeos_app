@@ -9,7 +9,13 @@ import { toast } from 'react-toastify'
 
 const subs = []
 
-const editCostoFijo = (costofijo) => console.log(costofijo)
+const editCostoFijo = async (id, value, original) => {
+  let updatedfield = {}
+  updatedfield[id] = value
+  await original.update({
+    $set: updatedfield,
+  })
+}
 const deleteCostoFijo = (costofijo) => console.log(costofijo)
 
 export function CostosFijos() {
@@ -21,7 +27,7 @@ export function CostosFijos() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       const db = await Database.get()
       const sub = db.costosfijos
         .find({
@@ -29,7 +35,6 @@ export function CostosFijos() {
           sort: [{ concepto: 'asc' }],
         })
         .$.subscribe((data) => {
-          console.log('Actualizando... CostosFijos.js ~ line 20 ~ data', data)
           if (!data) return
           setCostosfijos(data)
           setIsLoading(false)
@@ -43,7 +48,6 @@ export function CostosFijos() {
 
   //
   const addCostoFijo = async (costofijo) => {
-    console.log('🚀 ~ file: CostosFijos.js ~ line 52 ~ costofijo', costofijo)
     const db = await Database.get()
     try {
       await db.costosfijos.insert(costofijo)

@@ -34,9 +34,7 @@ const EditableCell = ({
 
   // We'll only update the external data when the input is blurred
   const onBlur = () => {
-    const updatedrow = original
-    updatedrow[id] = value
-    updateCallback(updatedrow)
+    updateCallback(id, value, original)
     setIsEditing(false)
   }
 
@@ -145,9 +143,9 @@ export function BasicTable({
   // When our cell renderer calls update_callback, we'll use
   // the rowIndex, columnId and new value to update the
   // original data
-  const updateCallback = (updatingdrow) => {
+  const updateCallback = (...args) => {
     // We also turn on the flag to not reset the page
-    update_callback(updatingdrow)
+    update_callback(...args)
     setSkipPageReset(true)
   }
 

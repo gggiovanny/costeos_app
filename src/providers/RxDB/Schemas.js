@@ -12,6 +12,5 @@ export const costofijoSchema = {
       type: 'number',
     },
   },
-  required: [ 'costo_mensual'],
+  required: ['costo_mensual'],
 }
-
