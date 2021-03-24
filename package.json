@@ -26,12 +26,15 @@
     "uuid": "^8.3.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "concurrently \"npm run server\" \"react-scripts start\"",
     "build": "react-scripts build && echo '/*    /index.html   200' > build/_redirects",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "server": "pouchdb-server --host 0.0.0.0 -p 10102 -d ./db -n true",
+    "http": "serve -p 3000 -s build",
+    "offline": "concurrently \"npm run server\" \"npm run http\""
   },
   "eslintConfig": {
     "extends": "react-app"
