@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { GenericForm } from '../components/GenericForm'
 import { BasicTable } from '../components/BasicTable'
 import { useForm } from 'react-hook-form'
@@ -7,6 +7,7 @@ import { MdAttachMoney } from 'react-icons/md'
 import { FaTrashAlt } from 'react-icons/fa'
 import { useRxInsert } from '../hooks/useRxInsert'
 import { useRxSubscribe } from '../hooks/useRxSubscribe'
+import { SelectCell } from '../components/TableCells/SelectCell'
 
 const subs = []
 
@@ -47,8 +48,20 @@ export function Insumos() {
   // usando custom hook para hacer el insert
   const addData = useRxInsert('insumos', reset)
 
+  // opcions del select de insumos normal
+  const unidadesOptions = useMemo(
+    () => unidades.map((uni) => ({ value: uni.id, label: uni.nombre })),
+    [unidades]
+  )
+
+  // opcions del select de insumos abreviado
+  const unidadesOptionsAbrev = useMemo(
+    () => unidades.map((uni) => ({ value: uni.id, label: uni.abrev })),
+    [unidades]
+  )
+
   // Campos del formulario
-  const fields = React.useMemo(
+  const fields = useMemo(
     () => [
       {
         title: 'Nombre',
@@ -60,7 +73,7 @@ export function Insumos() {
         title: 'Unidad',
         name: 'unidad',
         type: 'select',
-        data: unidades.map((uni) => ({ value: uni.id, label: uni.nombre })),
+        data: unidadesOptions,
       },
       {
         title: 'Valor de compra',
@@ -77,7 +90,7 @@ export function Insumos() {
         icon: <FaTrashAlt />,
       },
     ],
-    [unidades]
+    [unidadesOptions]
   )
 
   // Definiendo columnas de la tabla
@@ -94,9 +107,8 @@ export function Insumos() {
           const unidadObj = unidades.find((u) => u.id == item)
           return unidadObj ? unidadObj.abrev : item
         },
-        show_editing_callback: (item, original) => {
-          return item
-        },
+        select_options: unidadesOptionsAbrev,
+        Cell: SelectCell,
       },
       {
         Header: 'Valor de compra',
@@ -126,7 +138,7 @@ export function Insumos() {
           />
         </div>
       </div>
-      <div className="column">
+      <div className="column is-two-thirds">
         <BasicTable
           title="Insumos"
           cols={columns}

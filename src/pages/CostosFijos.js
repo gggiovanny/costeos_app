@@ -84,7 +84,7 @@ export function CostosFijos() {
           />
         </div>
       </div>
-      <div className="column">
+      <div className="column is-two-thirds">
         <BasicTable
           title="Costos Fijos"
           cols={columns}
