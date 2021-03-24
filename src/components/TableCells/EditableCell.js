@@ -4,11 +4,10 @@ import { useStringFormatter } from '../../hooks/useStringFormatter'
 export const EditableCell = ({
   value: initialValue,
   row: { index, original },
-  column: { id },
+  column: { id, show_normal_callback, show_editing_callback, style },
   updateCallback, // This is a custom function that we supplied to our table instance
   money_column, // custom prop passed
   isInEditMode, // indicate if the cell is in edit mode
-  column: { show_normal_callback, show_editing_callback },
 }) => {
   // We need to keep and update the state of the cell normally
   const [value, setValue] = useState(initialValue)
@@ -48,7 +47,7 @@ export const EditableCell = ({
     id === money_column && !isEditing ? money.format(value) : displayValue
 
   return (
-    <>
+    <div style={style}>
       {!isInEditMode ? (
         <span>{displayValue}</span>
       ) : (
@@ -61,6 +60,6 @@ export const EditableCell = ({
           type={id === money_column && isEditing ? 'number' : 'text'}
         />
       )}
-    </>
+    </div>
   )
 }

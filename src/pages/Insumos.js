@@ -109,6 +109,7 @@ export function Insumos() {
         },
         select_options: unidadesOptionsAbrev,
         Cell: SelectCell,
+        style: { width: '100px' },
       },
       {
         Header: 'Valor de compra',
