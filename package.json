@@ -21,12 +21,14 @@
     "react-select": "^4.2.1",
     "react-table": "^7.6.3",
     "react-toastify": "^7.0.3",
+    "react-use-storage": "^0.4.3",
     "rxdb": "^9.15.0",
     "rxjs": "^6.6.6",
     "uuid": "^8.3.2"
   },
   "scripts": {
-    "start": "concurrently \"npm run server\" \"react-scripts start\"",
+    "start": "react-scripts start",
+    "startdev": "concurrently \"npm run server\" \"react-scripts start\"",
     "build": "react-scripts build && echo '/*    /index.html   200' > build/_redirects",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -34,7 +36,8 @@
     "deploy": "gh-pages -d build",
     "server": "pouchdb-server --host 0.0.0.0 -p 10102 -d ./db -n true",
     "http": "serve -p 3000 -s build",
-    "offline": "concurrently \"npm run server\" \"npm run http\""
+    "offline": "concurrently \"npm run server\" \"npm run http\"",
+    "opendb": "ssh -R 80:localhost:5984 localhost.run"
   },
   "eslintConfig": {
     "extends": "react-app"

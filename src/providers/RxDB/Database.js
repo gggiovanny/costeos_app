@@ -4,6 +4,7 @@ import { RxDBLeaderElectionPlugin } from 'rxdb/plugins/leader-election'
 import { RxDBReplicationPlugin } from 'rxdb/plugins/replication'
 import { RxDBNoValidatePlugin } from 'rxdb/plugins/no-validate'
 import { v4 as uuidv4 } from 'uuid'
+import { useLocalStorage } from 'react-use-storage'
 
 addRxPlugin(require('pouchdb-adapter-idb'))
 addRxPlugin(require('pouchdb-adapter-http')) // enable syncing over http
@@ -29,15 +30,12 @@ const collections = [
   },
 ]
 
-const syncURL = 'http://' + window.location.hostname + ':10102/'
-
 let dbPromise = null
 
 const _create = async () => {
   console.log('DatabaseService: creating database..')
 
   // // en modo desarrollo, borrar la base de datos anterior
-  // if (process.env.NODE_ENV === 'development')
   //   await removeRxDatabase('costeosapp', 'idb')
 
   const db = await createRxDatabase({
@@ -77,15 +75,20 @@ const _create = async () => {
   }, false)
 
   // sync
-  console.log('DatabaseService: sync')
-  collections
-    .filter((col) => col.sync)
-    .map((col) => col.name)
-    .map((colName) =>
-      db[colName].sync({
-        remote: syncURL + colName + '/',
-      })
-    )
+  const dbUrl = window.localStorage.getItem('dbUrl')
+  if (dbUrl) {
+    console.log('DatabaseService: sync')
+    collections
+      .filter((col) => col.sync)
+      .map((col) => col.name)
+      .map((colName) =>
+        db[colName].sync({
+          remote: dbUrl + colName + '/',
+        })
+      )
+  } else {
+    console.log('DatabaseService: offline mode')
+  }
 
   return db
 }

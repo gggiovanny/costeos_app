@@ -10,6 +10,7 @@ export function GenericForm({
   onSubmit,
   errors,
   control = null,
+  buttonText = 'Agregar',
 }) {
   const parseSelectsData = (data) => {
     let newdata = {}
@@ -46,6 +47,7 @@ export function GenericForm({
                 title={field.title}
                 name={field.name}
                 type={field.type}
+                placeholder={field.placeholder}
                 allowDecimals={field.allowDecimals}
                 icon={field.icon}
                 errors={errors}
@@ -56,7 +58,7 @@ export function GenericForm({
         <input
           className="button is-success is-fullwidth"
           type="submit"
-          value="Agregar"
+          value={buttonText}
         />
       </form>
     </div>

@@ -26,10 +26,16 @@ export function FieldInput({
           onFocus={onFocus}
           step={allowDecimals ? 'any' : '1'}
         />
-        {icon && <span className="icon is-small is-left" style={{zIndex: 0}}>{icon}</span>}
+        {icon && (
+          <span className="icon is-small is-left" style={{ zIndex: 0 }}>
+            {icon}
+          </span>
+        )}
       </div>
       {showError && (
-        <p className="help is-danger">Falta agregar {title.toLowerCase()}.</p>
+        <p className="help is-danger">
+          Falta agregar {(title || placeholder || name).toLowerCase()}.
+        </p>
       )}
     </div>
   )

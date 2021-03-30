@@ -8,9 +8,13 @@ import { About } from './pages/About'
 import { NotFound } from './pages/NotFound'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { useLocalStorage } from 'react-use-storage'
+import { Login } from './pages/Login'
 
 function App() {
-  return (
+  const [isLogged, setIsLogged] = useLocalStorage('isLogged', false)
+
+  return isLogged ? (
     <>
       <MyNavbar />
       <div className="container is-widescreen mt-4">
@@ -25,6 +29,8 @@ function App() {
       </div>
       <ToastContainer position="bottom-center" pauseOnFocusLoss={false} />
     </>
+  ) : (
+    <Login />
   )
 }
 
