@@ -21,6 +21,7 @@
     "react-select": "^4.2.1",
     "react-table": "^7.6.3",
     "react-toastify": "^7.0.3",
+    "react-tooltip": "^4.2.17",
     "react-use-storage": "^0.4.3",
     "rxdb": "^9.15.0",
     "rxjs": "^6.6.6",
