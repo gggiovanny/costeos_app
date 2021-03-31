@@ -75,15 +75,16 @@ const _create = async () => {
   }, false)
 
   // sync
-  const dbUrl = window.localStorage.getItem('dbUrl')
+  let dbUrl = window.localStorage.getItem('dbUrl')
   if (dbUrl) {
     console.log('DatabaseService: sync')
+    dbUrl = JSON.parse(dbUrl) // haciendo json parse porque la libreria react-use-storage aplica conversion a json
     collections
       .filter((col) => col.sync)
       .map((col) => col.name)
       .map((colName) =>
         db[colName].sync({
-          remote: dbUrl + colName + '/',
+          remote: `${dbUrl}/${colName}/`,
         })
       )
   } else {
