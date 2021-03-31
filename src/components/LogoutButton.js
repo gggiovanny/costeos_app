@@ -8,7 +8,7 @@ export function LogoutButton() {
         className="button is-ghost"
         onClick={() => {
           window.localStorage.clear()
-          window.location.reload()
+          window.location.href = '/'
         }}
         data-tip="Cerrar sesión"
       >

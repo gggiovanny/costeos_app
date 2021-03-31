@@ -8,29 +8,26 @@ import { About } from './pages/About'
 import { NotFound } from './pages/NotFound'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { useLocalStorage } from 'react-use-storage'
-import { Login } from './pages/Login'
+import { LoggedOnly } from './components/LoggedOnly'
 
 function App() {
-  const [isLogged, setIsLogged] = useLocalStorage('isLogged', false)
-
-  return isLogged ? (
+  return (
     <>
-      <MyNavbar />
-      <div className="container is-widescreen mt-4">
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/costos-fijos" component={CostosFijos} />
-          <Route exact path="/unidades" component={Unidades} />
-          <Route exact path="/insumos" component={Insumos} />
-          <Route exact path="/about" component={About} />
-          <Route component={NotFound} />
-        </Switch>
-      </div>
+      <LoggedOnly>
+        <MyNavbar />
+        <div className="container is-widescreen mt-4">
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/costos-fijos" component={CostosFijos} />
+            <Route exact path="/unidades" component={Unidades} />
+            <Route exact path="/insumos" component={Insumos} />
+            <Route exact path="/about" component={About} />
+            <Route component={NotFound} />
+          </Switch>
+        </div>
+      </LoggedOnly>
       <ToastContainer position="bottom-center" pauseOnFocusLoss={false} />
     </>
-  ) : (
-    <Login />
   )
 }
 
