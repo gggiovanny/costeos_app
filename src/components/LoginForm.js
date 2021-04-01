@@ -10,6 +10,7 @@ const login = (db_url, name, password) => {
   const params = new URLSearchParams({ name, password })
   return fetch(`${db_url}/_session`, {
     method: 'POST',
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
     },
