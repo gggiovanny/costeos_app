@@ -1,4 +1,4 @@
-import { createRxDatabase, removeRxDatabase, addRxPlugin } from 'rxdb'
+import { createRxDatabase, addRxPlugin } from 'rxdb'
 import { costofijoSchema, unidadesSchema, insumosSchema } from './Schemas'
 import { RxDBLeaderElectionPlugin } from 'rxdb/plugins/leader-election'
 import { RxDBReplicationPlugin } from 'rxdb/plugins/replication'
@@ -34,9 +34,6 @@ let dbPromise = null
 
 const _create = async () => {
   console.log('DatabaseService: creating database..')
-
-  // // en modo desarrollo, borrar la base de datos anterior
-  //   await removeRxDatabase('costeosapp', 'idb')
 
   const db = await createRxDatabase({
     name: 'costeosapp',
