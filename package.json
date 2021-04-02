@@ -29,7 +29,6 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "startdev": "concurrently \"npm run server\" \"react-scripts start\"",
     "build": "react-scripts build && echo '/*    /index.html   200' > build/_redirects",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -38,7 +37,7 @@
     "server": "pouchdb-server --host 0.0.0.0 -p 10102 -d ./db -n true",
     "http": "serve -p 3000 -s build",
     "offline": "concurrently \"npm run server\" \"npm run http\"",
-    "opendb": "ssh -R 80:localhost:5984 localhost.run"
+    "opendb": "ngrok.exe http https://localhost:6984"
   },
   "eslintConfig": {
     "extends": "react-app"

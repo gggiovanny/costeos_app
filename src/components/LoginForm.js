@@ -35,6 +35,11 @@ export function LoginForm() {
     })
   }
 
+  // funcion para activar modo sin conexion a la base de datos
+  const activateLocalMode = () => {
+    setIsLogged(true)
+  }
+
   // Campos del formulario
   const fields = useMemo(
     () => [
@@ -61,13 +66,20 @@ export function LoginForm() {
   )
 
   return (
-    <GenericForm
-      fields={fields}
-      register={register}
-      handleSubmit={handleSubmit}
-      onSubmit={onSubmit}
-      errors={errors}
-      buttonText="Iniciar sesión"
-    />
+    <div>
+      <GenericForm
+        fields={fields}
+        register={register}
+        handleSubmit={handleSubmit}
+        onSubmit={onSubmit}
+        errors={errors}
+        buttonText="Iniciar sesión"
+      />
+      <div className="mt-2 is-flex is-justify-content-center">
+        <a className="" onClick={activateLocalMode}>
+          Usar en modo local
+        </a>
+      </div>
+    </div>
   )
 }
