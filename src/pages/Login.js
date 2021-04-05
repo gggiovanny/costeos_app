@@ -1,4 +1,4 @@
-import { LoginForm } from '../components/LoginForm'
+import { LoginForm } from '../components/Login/LoginForm'
 export function Login() {
   return (
     <div className="columns is-centered mt-4 ">

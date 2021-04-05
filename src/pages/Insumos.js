@@ -1,14 +1,14 @@
 import { useMemo, useState } from 'react'
-import { GenericForm } from '../components/GenericForm'
-import { BasicTable } from '../components/BasicTable'
+import { GenericForm } from '../components/Forms/GenericForm'
+import { BasicTable } from '../components/Table/BasicTable'
 import { useForm } from 'react-hook-form'
 import { HiTag } from 'react-icons/hi'
 import { MdAttachMoney } from 'react-icons/md'
 import { FaTrashAlt } from 'react-icons/fa'
 import { useRxInsert } from '../hooks/useRxInsert'
 import { useRxSubscribe } from '../hooks/useRxSubscribe'
-import { SelectCell } from '../components/TableCells/SelectCell'
-import { CheckboxCell } from '../components/TableCells/CheckboxCell'
+import { SelectCell } from '../components/Table/Cells/SelectCell'
+import { CheckboxCell } from '../components/Table/Cells/CheckboxCell'
 
 const subs = []
 

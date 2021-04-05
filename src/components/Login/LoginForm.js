@@ -1,4 +1,4 @@
-import { GenericForm } from './GenericForm'
+import { GenericForm } from '../Forms/GenericForm'
 import { useForm } from 'react-hook-form'
 import { RiUser5Fill } from 'react-icons/ri'
 import { BsFillShieldLockFill } from 'react-icons/bs'

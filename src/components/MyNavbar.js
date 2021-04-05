@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { LogoutButton } from '../components/LogoutButton'
+import { LogoutButton } from '../components/Login/LogoutButton'
 
 export const MyNavbar = () => {
   const [isActive, setIsActive] = useState(false)

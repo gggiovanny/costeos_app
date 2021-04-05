@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react'
-import { GenericForm } from '../components/GenericForm'
-import { BasicTable } from '../components/BasicTable'
+import { GenericForm } from '../components/Forms/GenericForm'
+import { BasicTable } from '../components/Table/BasicTable'
 import { useForm } from 'react-hook-form'
 import { HiTag, HiMinusCircle } from 'react-icons/hi'
 import { useRxInsert } from '../hooks/useRxInsert'

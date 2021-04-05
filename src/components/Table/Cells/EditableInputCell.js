@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useStringFormatter } from '../../hooks/useStringFormatter'
+import { useStringFormatter } from '../../../hooks/useStringFormatter'
 
 export const EditableCell = ({
   value: initialValue,

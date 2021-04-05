@@ -6,12 +6,12 @@ import {
   useGlobalFilter,
   useAsyncDebounce,
 } from 'react-table'
-import { Panel } from '../components/Panel'
+import { Panel } from '../Panel'
 import { FiSearch } from 'react-icons/fi'
 import { FiEdit } from 'react-icons/fi'
 import { MdDeleteForever } from 'react-icons/md'
-import { useStringFormatter } from '../hooks/useStringFormatter'
-import { EditableCell } from './TableCells/EditableCell'
+import { useStringFormatter } from '../../hooks/useStringFormatter'
+import { EditableCell } from './Cells/EditableInputCell'
 
 const default_rxdb_update_callback = async (id, value, original) => {
   let updatedfield = {}

@@ -8,7 +8,7 @@ import { About } from './pages/About'
 import { NotFound } from './pages/NotFound'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { LoggedOnly } from './components/LoggedOnly'
+import { LoggedOnly } from './components/Login/LoggedOnly'
 
 function App() {
   return (

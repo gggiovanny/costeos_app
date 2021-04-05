@@ -1,8 +1,8 @@
 import React from 'react'
-import { FieldInput } from './FieldInput'
+import { FieldInput } from './Fields/FieldInput'
 import PropTypes from 'prop-types'
-import { FieldSelect } from './FieldSelect'
-import { FieldCheckbox } from './FieldCheckbox'
+import { FieldSelect } from './Fields/FieldSelect'
+import { FieldCheckbox } from './Fields/FieldCheckbox'
 
 export function GenericForm({
   fields,
