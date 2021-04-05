@@ -20,6 +20,7 @@ export function Insumos() {
   const [insumos, setInsumos] = useState([])
   const [unidades, setUnidades] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [noEsencial, setNoEsencial] = useState(false)
 
   // usando custom hook para hacer la suscripcion
   useRxSubscribe(
@@ -107,6 +108,9 @@ export function Insumos() {
         title: 'Artículo no esencial en almacén',
         name: 'contar_en_almacen',
         type: 'checkbox',
+        onChange: (e) => {
+          setNoEsencial(e.currentTarget.checked)
+        },
         icon: <FaTrashAlt />,
       },
       {
@@ -114,10 +118,11 @@ export function Insumos() {
         name: 'stock_minimo',
         type: 'number',
         allowDecimals: true,
+        disabled: noEsencial,
         icon: <FaTrashAlt />,
       },
     ],
-    [unidadesOptions]
+    [unidadesOptions, noEsencial]
   )
 
   // Definiendo columnas de la tabla

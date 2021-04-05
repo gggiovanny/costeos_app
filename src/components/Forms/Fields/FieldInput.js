@@ -11,6 +11,8 @@ export function FieldInput({
   inputRef,
   onFocus = null,
   allowDecimals = false,
+  disabled = false,
+  ...otherprops
 }) {
   const showError = errors[name]
   return (
@@ -25,6 +27,8 @@ export function FieldInput({
           placeholder={placeholder || title}
           onFocus={onFocus}
           step={allowDecimals ? 'any' : '1'}
+          disabled={disabled}
+          {...otherprops}
         />
         {icon && (
           <span className="icon is-small is-left" style={{ zIndex: 0 }}>

@@ -10,6 +10,8 @@ export const FieldSelect = ({
   title,
   errors,
   onFocus = null,
+  disabled = false,
+  ...otherprops
 }) => (
   <div className="field">
     {title && <label className="label">{title}</label>}
@@ -21,7 +23,9 @@ export const FieldSelect = ({
         options={data}
         defaultValue={''}
         onFocus={onFocus}
+        isDisabled={disabled}
         as={Select}
+        {...otherprops}
       />
     </div>
     {errors[name] && (

@@ -25,8 +25,11 @@ export function GenericForm({
     <div>
       <form onSubmit={handleSubmit(parseSelectsData)}>
         {fields.map((field, index) => {
-          const isFieldRequired =
+          // los campos por defecto son requeridos
+          let isFieldRequired =
             field.required === undefined ? true : field.required
+          // si estan desabilitados, entonces no son requeridos
+          isFieldRequired = field.disabled ? false : isFieldRequired
           if (field.type == 'select')
             return (
               <FieldSelect
@@ -37,6 +40,8 @@ export function GenericForm({
                 errors={errors}
                 key={field.name + index}
                 data={field.data}
+                disabled={field.disabled}
+                onChange={field.onChange}
               />
             )
           else if (field.type == 'checkbox')
@@ -49,6 +54,8 @@ export function GenericForm({
                 name={field.name}
                 errors={errors}
                 key={field.name + index}
+                disabled={field.disabled}
+                onChange={field.onChange}
               />
             )
           else
@@ -65,6 +72,8 @@ export function GenericForm({
                 icon={field.icon}
                 errors={errors}
                 key={field.name + index}
+                disabled={field.disabled}
+                onChange={field.onChange}
               />
             )
         })}
