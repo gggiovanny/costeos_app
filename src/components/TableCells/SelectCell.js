@@ -18,7 +18,7 @@ export const SelectCell = ({
     : show_normal_callback(value, original)
 
   return (
-    <div style={style}>
+    <div style={{ width: '100px' }}>
       {!isInEditMode ? (
         <span>{displayValue}</span>
       ) : (

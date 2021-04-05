@@ -15,7 +15,7 @@ function App() {
     <>
       <LoggedOnly>
         <MyNavbar />
-        <div className="container is-widescreen mt-4">
+        <div className="mt-4">
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/costos-fijos" component={CostosFijos} />
