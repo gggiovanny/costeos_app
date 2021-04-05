@@ -62,14 +62,27 @@ export const insumosSchema = {
     nombre: {
       type: 'string',
     },
-    unidad: {
+    unidad_entrada: {
       ref: 'unidades',
       type: 'string',
+    },
+    unidad_salida: {
+      ref: 'unidades',
+      type: 'string',
+    },
+    factor_conversion: {
+      type: 'number',
     },
     valor_de_compra: {
       type: 'string',
     },
     merma: {
+      type: 'number',
+    },
+    contar_en_almacen: {
+      type: 'boolean',
+    },
+    stock_minimo: {
       type: 'number',
     },
   },

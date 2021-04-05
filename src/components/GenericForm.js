@@ -2,6 +2,7 @@ import React from 'react'
 import { FieldInput } from './FieldInput'
 import PropTypes from 'prop-types'
 import { FieldSelect } from './FieldSelect'
+import { FieldCheckbox } from './FieldCheckbox'
 
 export function GenericForm({
   fields,
@@ -36,6 +37,18 @@ export function GenericForm({
                 errors={errors}
                 key={field.name + index}
                 data={field.data}
+              />
+            )
+          else if (field.type == 'checkbox')
+            return (
+              <FieldCheckbox
+                inputRef={register({
+                  required: false,
+                })}
+                title={field.title}
+                name={field.name}
+                errors={errors}
+                key={field.name + index}
               />
             )
           else

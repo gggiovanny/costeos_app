@@ -8,6 +8,7 @@ import { FaTrashAlt } from 'react-icons/fa'
 import { useRxInsert } from '../hooks/useRxInsert'
 import { useRxSubscribe } from '../hooks/useRxSubscribe'
 import { SelectCell } from '../components/TableCells/SelectCell'
+import { CheckboxCell } from '../components/TableCells/CheckboxCell'
 
 const subs = []
 
@@ -70,10 +71,23 @@ export function Insumos() {
         icon: <HiTag />,
       },
       {
-        title: 'Unidad',
-        name: 'unidad',
+        title: 'Unidad de entrada',
+        name: 'unidad_entrada',
         type: 'select',
         data: unidadesOptions,
+      },
+      {
+        title: 'Unidad de salida',
+        name: 'unidad_salida',
+        type: 'select',
+        data: unidadesOptions,
+      },
+      {
+        title: 'Factor de conversión',
+        name: 'factor_conversion',
+        type: 'number',
+        allowDecimals: true,
+        icon: <FaTrashAlt />,
       },
       {
         title: 'Valor de compra',
@@ -85,6 +99,19 @@ export function Insumos() {
       {
         title: 'Merma',
         name: 'merma',
+        type: 'number',
+        allowDecimals: true,
+        icon: <FaTrashAlt />,
+      },
+      {
+        title: 'Artículo no esencial en almacén',
+        name: 'contar_en_almacen',
+        type: 'checkbox',
+        icon: <FaTrashAlt />,
+      },
+      {
+        title: 'Stock mínimo',
+        name: 'stock_minimo',
         type: 'number',
         allowDecimals: true,
         icon: <FaTrashAlt />,
@@ -101,15 +128,28 @@ export function Insumos() {
         accessor: 'nombre',
       },
       {
-        Header: 'Unidad',
-        accessor: 'unidad',
+        Header: 'Uni. ent.',
+        accessor: 'unidad_entrada',
         show_normal_callback: (item, original) => {
           const unidadObj = unidades.find((u) => u.id == item)
           return unidadObj ? unidadObj.abrev : item
         },
         select_options: unidadesOptionsAbrev,
         Cell: SelectCell,
-        style: { width: '100px' },
+      },
+      {
+        Header: 'Uni. sal.',
+        accessor: 'unidad_salida',
+        show_normal_callback: (item, original) => {
+          const unidadObj = unidades.find((u) => u.id == item)
+          return unidadObj ? unidadObj.abrev : item
+        },
+        select_options: unidadesOptionsAbrev,
+        Cell: SelectCell,
+      },
+      {
+        Header: 'Factor de conversión',
+        accessor: 'factor_conversion',
       },
       {
         Header: 'Valor de compra',
@@ -118,6 +158,11 @@ export function Insumos() {
       {
         Header: 'Merma',
         accessor: 'merma',
+      },
+      {
+        Header: 'No esencial',
+        accessor: 'contar_en_almacen',
+        Cell: CheckboxCell,
       },
     ],
     [unidades]
