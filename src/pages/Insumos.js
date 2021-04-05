@@ -4,7 +4,8 @@ import { BasicTable } from '../components/Table/BasicTable'
 import { useForm } from 'react-hook-form'
 import { HiTag } from 'react-icons/hi'
 import { MdAttachMoney } from 'react-icons/md'
-import { FaTrashAlt } from 'react-icons/fa'
+import { FaTrashAlt, FaWarehouse } from 'react-icons/fa'
+import { BsFillGearFill } from 'react-icons/bs'
 import { useRxInsert } from '../hooks/useRxInsert'
 import { useRxSubscribe } from '../hooks/useRxSubscribe'
 import { SelectCell } from '../components/Table/Cells/SelectCell'
@@ -88,7 +89,7 @@ export function Insumos() {
         name: 'factor_conversion',
         type: 'number',
         allowDecimals: true,
-        icon: <FaTrashAlt />,
+        icon: <BsFillGearFill />,
       },
       {
         title: 'Valor de compra',
@@ -111,7 +112,6 @@ export function Insumos() {
         onChange: (e) => {
           setNoEsencial(e.currentTarget.checked)
         },
-        icon: <FaTrashAlt />,
       },
       {
         title: 'Stock mínimo',
@@ -119,7 +119,7 @@ export function Insumos() {
         type: 'number',
         allowDecimals: true,
         disabled: noEsencial,
-        icon: <FaTrashAlt />,
+        icon: <FaWarehouse />,
       },
     ],
     [unidadesOptions, noEsencial]
