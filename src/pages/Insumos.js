@@ -164,6 +164,10 @@ export function Insumos() {
         accessor: 'contar_en_almacen',
         Cell: CheckboxCell,
       },
+      {
+        Header: 'Stock min.',
+        accessor: 'stock_minimo',
+      },
     ],
     [unidades]
   )
