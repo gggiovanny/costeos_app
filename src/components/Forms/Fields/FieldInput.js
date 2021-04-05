@@ -7,6 +7,7 @@ export function FieldInput({
   title,
   placeholder,
   icon,
+  iconRight = null,
   errors,
   inputRef,
   onFocus = null,
@@ -18,7 +19,7 @@ export function FieldInput({
   return (
     <div className="field">
       {title && <label className="label">{title}</label>}
-      <div className="control has-icons-left">
+      <div className="control has-icons-left has-icons-right">
         <input
           ref={inputRef}
           className="input"
@@ -33,6 +34,11 @@ export function FieldInput({
         {icon && (
           <span className="icon is-small is-left" style={{ zIndex: 0 }}>
             {icon}
+          </span>
+        )}
+        {iconRight && (
+          <span className="icon is-medium is-right" style={{ zIndex: 0 }}>
+            {iconRight}
           </span>
         )}
       </div>
