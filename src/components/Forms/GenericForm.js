@@ -24,59 +24,74 @@ export function GenericForm({
   return (
     <div>
       <form onSubmit={handleSubmit(parseSelectsData)}>
-        {fields.map((field, index) => {
-          // los campos por defecto son requeridos
-          let isFieldRequired =
-            field.required === undefined ? true : field.required
-          // si estan desabilitados, entonces no son requeridos
-          isFieldRequired = field.disabled ? false : isFieldRequired
-          if (field.type == 'select')
-            return (
-              <FieldSelect
-                control={control}
-                required={isFieldRequired}
-                title={field.title}
-                name={field.name}
-                errors={errors}
-                key={field.name + index}
-                data={field.data}
-                disabled={field.disabled}
-                onChange={field.onChange}
-              />
-            )
-          else if (field.type == 'checkbox')
-            return (
-              <FieldCheckbox
-                inputRef={register({
-                  required: false,
-                })}
-                title={field.title}
-                name={field.name}
-                errors={errors}
-                key={field.name + index}
-                disabled={field.disabled}
-                onChange={field.onChange}
-              />
-            )
-          else
-            return (
-              <FieldInput
-                inputRef={register({
-                  required: isFieldRequired,
-                })}
-                title={field.title}
-                name={field.name}
-                type={field.type}
-                placeholder={field.placeholder}
-                allowDecimals={field.allowDecimals}
-                icon={field.icon}
-                errors={errors}
-                key={field.name + index}
-                disabled={field.disabled}
-                onChange={field.onChange}
-              />
-            )
-        })}
+        {fields.map(
+          (
+            {
+              required,
+              disabled,
+              type,
+              title,
+              name,
+              data,
+              placeholder,
+              allowDecimals,
+              icon,
+              ...otherprops
+            },
+            index
+          ) => {
+            // los campos por defecto son requeridos
+            let isFieldRequired = required === undefined ? true : required
+            // si estan desabilitados, entonces no son requeridos
+            isFieldRequired = disabled ? false : isFieldRequired
+            if (type == 'select')
+              return (
+                <FieldSelect
+                  control={control}
+                  required={isFieldRequired}
+                  title={title}
+                  name={name}
+                  errors={errors}
+                  key={name + index}
+                  data={data}
+                  disabled={disabled}
+                  {...otherprops}
+                />
+              )
+            else if (type == 'checkbox')
+              return (
+                <FieldCheckbox
+                  inputRef={register({
+                    required: false,
+                  })}
+                  title={title}
+                  name={name}
+                  errors={errors}
+                  key={name + index}
+                  disabled={disabled}
+                  {...otherprops}
+                />
+              )
+            else
+              return (
+                <FieldInput
+                  inputRef={register({
+                    required: isFieldRequired,
+                  })}
+                  title={title}
+                  name={name}
+                  type={type}
+                  placeholder={placeholder}
+                  allowDecimals={allowDecimals}
+                  icon={icon}
+                  errors={errors}
+                  key={name + index}
+                  disabled={disabled}
+                  {...otherprops}
+                />
+              )
+          }
+        )}
         <input
           className="button is-success is-fullwidth"
           type="submit"
