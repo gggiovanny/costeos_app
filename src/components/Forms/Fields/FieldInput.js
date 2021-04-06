@@ -13,6 +13,7 @@ export function FieldInput({
   onFocus = null,
   allowDecimals = false,
   disabled = false,
+  infoText = null,
   ...otherprops
 }) {
   const showError = errors[name]
@@ -37,11 +38,12 @@ export function FieldInput({
           </span>
         )}
         {iconRight && (
-          <span className="icon is-medium is-right" style={{ zIndex: 0 }}>
+          <span className="icon is-small is-right" style={{ zIndex: 0 }}>
             {iconRight}
           </span>
         )}
       </div>
+      {infoText && <p className="help is-info">{infoText}</p>}
       {showError && (
         <p className="help is-danger">
           Falta agregar {(title || placeholder || name).toLowerCase()}.

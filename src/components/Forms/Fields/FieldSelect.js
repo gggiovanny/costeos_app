@@ -11,6 +11,7 @@ export const FieldSelect = ({
   errors,
   onFocus = null,
   disabled = false,
+  defaultValue = '',
   ...otherprops
 }) => (
   <div className="field">
@@ -21,7 +22,7 @@ export const FieldSelect = ({
         control={control}
         rules={{ required: required }}
         options={data}
-        defaultValue={''}
+        defaultValue={defaultValue}
         onFocus={onFocus}
         isDisabled={disabled}
         as={Select}

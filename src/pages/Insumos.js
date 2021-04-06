@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { GenericForm } from '../components/Forms/GenericForm'
 import { BasicTable } from '../components/Table/BasicTable'
 import { useForm } from 'react-hook-form'
@@ -15,13 +15,20 @@ const subs = []
 
 export function Insumos() {
   // Inicializando el hook para el formulario
-  const { register, handleSubmit, errors, reset, control } = useForm()
+  const {
+    register,
+    handleSubmit,
+    errors,
+    reset,
+    control,
+    watch,
+    setValue,
+  } = useForm()
 
   // creando elementos del estado
   const [insumos, setInsumos] = useState([])
   const [unidades, setUnidades] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  const [noEsencial, setNoEsencial] = useState(false)
 
   // usando custom hook para hacer la suscripcion
   useRxSubscribe(
@@ -63,6 +70,42 @@ export function Insumos() {
     [unidades]
   )
 
+  // campos del formulario que se observan mientras se modifican
+  const unidadSalida = watch('unidad_salida')
+  const unidadEntrada = watch('unidad_entrada')
+  // usado como unidad de stock_minimo
+  const unidadStockAbrev = useMemo(
+    () =>
+      unidadSalida && unidadesOptionsAbrev
+        ? unidadesOptionsAbrev.find((u) => u.value == unidadSalida.value).label
+        : '',
+    [unidadSalida, unidadesOptionsAbrev]
+  )
+  // usado para desactivar campos
+  const noEsencial = watch('contar_en_almacen')
+  // texto de info de conversion
+  const factorConversion = watch('factor_conversion')
+  const conversionInfo = useMemo(
+    () =>
+      unidadEntrada && unidadSalida
+        ? `1 ${unidadEntrada.label} equivale a ${factorConversion || 'N'} ${
+            unidadSalida.label
+          }s`
+        : null,
+    [unidadEntrada, unidadSalida, factorConversion]
+  )
+  // si el factor de conversion debe estar activo
+  const factorConversionDisabled = useMemo(() => {
+    return unidadEntrada == unidadSalida
+  }, [unidadEntrada, unidadSalida])
+
+  useEffect(() => {
+    // si hay definida unidad de entrada pero no de salida, la de salida es igual a la de entrada
+    if (unidadEntrada && !unidadSalida) {
+      setValue('unidad_salida', unidadEntrada)
+    }
+  }, [unidadEntrada])
+
   // Campos del formulario
   const fields = useMemo(
     () => [
@@ -89,7 +132,10 @@ export function Insumos() {
         name: 'factor_conversion',
         type: 'number',
         allowDecimals: true,
+        defaultValue: 1,
         icon: <BsFillGearFill />,
+        infoText: !factorConversionDisabled && conversionInfo,
+        disabled: factorConversionDisabled,
       },
       {
         title: 'Valor de compra',
@@ -109,9 +155,6 @@ export function Insumos() {
         title: 'Artículo no esencial en almacén',
         name: 'contar_en_almacen',
         type: 'checkbox',
-        onChange: (e) => {
-          setNoEsencial(e.currentTarget.checked)
-        },
       },
       {
         title: 'Stock mínimo',
@@ -120,9 +163,16 @@ export function Insumos() {
         allowDecimals: true,
         disabled: noEsencial,
         icon: <FaWarehouse />,
+        iconRight: <span style={{ color: '#696969' }}>{unidadStockAbrev}</span>,
       },
     ],
-    [unidadesOptions, noEsencial]
+    [
+      unidadesOptions,
+      noEsencial,
+      unidadStockAbrev,
+      conversionInfo,
+      factorConversionDisabled,
+    ]
   )
 
   // Definiendo columnas de la tabla
