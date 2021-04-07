@@ -17,18 +17,7 @@ export function FormWrapper({
       })}
     >
       {Children.map(children, (Field, index) => {
-        let {
-          required,
-          disabled,
-          type,
-          title,
-          name,
-          data,
-          placeholder,
-          allowDecimals,
-          icon,
-          ...otherprops
-        } = Field.props
+        let { required, disabled, name } = Field.props
         let isFieldRequired = applyRequiredRules(required, disabled)
 
         // agregando props a cada Field hijo de FormWrapper para controlarlos con react-hook-form

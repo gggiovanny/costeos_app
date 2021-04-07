@@ -10,7 +10,6 @@ export function FieldInput({
   iconRight = null,
   errors,
   inputRef,
-  onFocus = null,
   allowDecimals = false,
   disabled = false,
   infoText = null,
@@ -27,7 +26,6 @@ export function FieldInput({
           name={name}
           type={type || 'text'}
           placeholder={placeholder || title}
-          onFocus={onFocus}
           step={allowDecimals ? 'any' : '1'}
           disabled={disabled}
           {...otherprops}
@@ -62,5 +60,4 @@ FieldInput.propTypes = {
   icon: PropTypes.element,
   errors: PropTypes.object,
   inputRef: PropTypes.any,
-  onFocus: PropTypes.func,
 }

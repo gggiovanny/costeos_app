@@ -9,7 +9,6 @@ export const FieldSelect = ({
   name,
   title,
   errors,
-  onFocus = null,
   disabled = false,
   defaultValue = '',
   ...otherprops
@@ -23,7 +22,6 @@ export const FieldSelect = ({
         rules={{ required: required }}
         options={data}
         defaultValue={defaultValue}
-        onFocus={onFocus}
         isDisabled={disabled}
         as={Select}
         {...otherprops}
