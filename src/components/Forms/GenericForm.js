@@ -1,8 +1,8 @@
-import React from 'react'
-import { FieldInput } from './Fields/FieldInput'
 import PropTypes from 'prop-types'
+import { FieldInput } from './Fields/FieldInput'
 import { FieldSelect } from './Fields/FieldSelect'
 import { FieldCheckbox } from './Fields/FieldCheckbox'
+import { parseSelectsData, applyRequiredRules } from './Helpers'
 
 export function GenericForm({
   fields,
@@ -13,17 +13,13 @@ export function GenericForm({
   control = null,
   buttonText = 'Agregar',
 }) {
-  const parseSelectsData = (data) => {
-    let newdata = {}
-    for (const [key, val] of Object.entries(data)) {
-      newdata[key] = typeof val === 'object' ? val.value : val
-    }
-    onSubmit(newdata)
-  }
-
   return (
     <div>
-      <form onSubmit={handleSubmit(parseSelectsData)}>
+      <form
+        onSubmit={handleSubmit((data) => {
+          onSubmit(parseSelectsData(data))
+        })}
+      >
         {fields.map(
           (
             {
@@ -40,10 +36,7 @@ export function GenericForm({
             },
             index
           ) => {
-            // los campos por defecto son requeridos
-            let isFieldRequired = required === undefined ? true : required
-            // si estan desabilitados, entonces no son requeridos
-            isFieldRequired = disabled ? false : isFieldRequired
+            let isFieldRequired = applyRequiredRules(required, disabled)
             if (type == 'select')
               return (
                 <FieldSelect

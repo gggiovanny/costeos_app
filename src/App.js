@@ -4,6 +4,7 @@ import { Home } from './pages/Home'
 import { CostosFijos } from './pages/CostosFijos'
 import { Unidades } from './pages/Unidades'
 import { Insumos } from './pages/Insumos'
+import { Recetas } from './pages/Recetas'
 import { About } from './pages/About'
 import { NotFound } from './pages/NotFound'
 import { ToastContainer } from 'react-toastify'
@@ -21,6 +22,7 @@ function App() {
             <Route exact path="/costos-fijos" component={CostosFijos} />
             <Route exact path="/unidades" component={Unidades} />
             <Route exact path="/insumos" component={Insumos} />
+            <Route exact path="/recetas" component={Recetas} />
             <Route exact path="/about" component={About} />
             <Route component={NotFound} />
           </Switch>
