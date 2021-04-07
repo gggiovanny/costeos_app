@@ -1,5 +1,5 @@
 import { createRxDatabase, addRxPlugin } from 'rxdb'
-import { costofijoSchema, unidadesSchema, insumosSchema } from './Schemas'
+import { collections } from './Schemas'
 import { RxDBLeaderElectionPlugin } from 'rxdb/plugins/leader-election'
 import { RxDBReplicationPlugin } from 'rxdb/plugins/replication'
 import { RxDBNoValidatePlugin } from 'rxdb/plugins/no-validate'
@@ -11,24 +11,6 @@ addRxPlugin(require('pouchdb-adapter-http')) // enable syncing over http
 addRxPlugin(RxDBLeaderElectionPlugin)
 addRxPlugin(RxDBReplicationPlugin)
 addRxPlugin(RxDBNoValidatePlugin)
-
-const collections = [
-  {
-    name: 'costosfijos',
-    schema: costofijoSchema,
-    sync: true,
-  },
-  {
-    name: 'unidades',
-    schema: unidadesSchema,
-    sync: true,
-  },
-  {
-    name: 'insumos',
-    schema: insumosSchema,
-    sync: true,
-  },
-]
 
 let dbPromise = null
 

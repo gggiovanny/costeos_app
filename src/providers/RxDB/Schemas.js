@@ -1,4 +1,4 @@
-export const costofijoSchema = {
+const costofijoSchema = {
   title: 'costofijo schema',
   description: 'Es un costo que es predecible a lo largo de un mes.',
   version: 0,
@@ -22,7 +22,7 @@ export const costofijoSchema = {
   indexes: ['timestamp'],
 }
 
-export const unidadesSchema = {
+const unidadesSchema = {
   title: 'unidades schema',
   description: 'Catálogo de unidades',
   version: 0,
@@ -46,7 +46,7 @@ export const unidadesSchema = {
   indexes: ['abrev', 'timestamp'],
 }
 
-export const insumosSchema = {
+const insumosSchema = {
   title: 'insumos schema',
   description: 'Registro de insumos',
   version: 0,
@@ -89,3 +89,21 @@ export const insumosSchema = {
   required: ['nombre'],
   indexes: ['timestamp'],
 }
+
+export const collections = [
+  {
+    name: 'costosfijos',
+    schema: costofijoSchema,
+    sync: true,
+  },
+  {
+    name: 'unidades',
+    schema: unidadesSchema,
+    sync: true,
+  },
+  {
+    name: 'insumos',
+    schema: insumosSchema,
+    sync: true,
+  },
+]
