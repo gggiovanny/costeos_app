@@ -90,20 +90,16 @@ const insumosSchema = {
   indexes: ['timestamp'],
 }
 
-export const collections = [
-  {
-    name: 'costosfijos',
+export const collections =
+{
+  costosfijos: {
     schema: costofijoSchema,
-    sync: true,
   },
-  {
-    name: 'unidades',
+  unidades: {
     schema: unidadesSchema,
-    sync: true,
   },
-  {
-    name: 'insumos',
+  insumos: {
     schema: insumosSchema,
-    sync: true,
   },
-]
+}
+

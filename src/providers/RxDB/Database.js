@@ -32,7 +32,7 @@ const _create = async () => {
 
   // create collections
   console.log('DatabaseService: create collections')
-  await Promise.all(collections.map((colData) => db.collection(colData)))
+  await db.addCollections(collections);
 
   // hooks
   console.log('DatabaseService: add hooks')
@@ -58,9 +58,7 @@ const _create = async () => {
   if (dbUrl) {
     console.log('DatabaseService: sync')
     dbUrl = JSON.parse(dbUrl) // haciendo json parse porque la libreria react-use-storage aplica conversion a json
-    collections
-      .filter((col) => col.sync)
-      .map((col) => col.name)
+    Object.keys(collections)
       .map((colName) =>
         db[colName].sync({
           remote: `${dbUrl}/${colName}/`,
