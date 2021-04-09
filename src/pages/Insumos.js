@@ -4,8 +4,9 @@ import { BasicTable } from '../components/Table/BasicTable'
 import { useForm } from 'react-hook-form'
 import { HiTag } from 'react-icons/hi'
 import { MdAttachMoney } from 'react-icons/md'
-import { FaTrashAlt, FaWarehouse } from 'react-icons/fa'
+import { FaTrashAlt, FaWarehouse, FaTruck } from 'react-icons/fa'
 import { BsFillGearFill } from 'react-icons/bs'
+import { VscTag } from 'react-icons/vsc'
 import { useRxInsert } from '../hooks/useRxInsert'
 import { useRxSubscribe } from '../hooks/useRxSubscribe'
 import { SelectCell } from '../components/Table/Cells/SelectCell'
@@ -165,6 +166,18 @@ export function Insumos() {
         icon: <FaWarehouse />,
         iconRight: <span style={{ color: '#696969' }}>{unidadStockAbrev}</span>,
       },
+      {
+        title: 'Marca',
+        name: 'marca',
+        type: 'text',
+        icon: <VscTag />,
+      },
+      {
+        title: 'Proveedor',
+        name: 'proveedor',
+        type: 'text',
+        icon: <FaTruck />,
+      },
     ],
     [
       unidadesOptions,
@@ -222,6 +235,14 @@ export function Insumos() {
       {
         Header: 'Stock min.',
         accessor: 'stock_minimo',
+      },
+      {
+        Header: 'Marca',
+        accessor: 'marca',
+      },
+      {
+        Header: 'Proveedor',
+        accessor: 'proveedor',
       },
     ],
     [unidades]
