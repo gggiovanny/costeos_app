@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { FieldInput } from './Fields/FieldInput'
 import { FieldSelect } from './Fields/FieldSelect'
 import { FieldCheckbox } from './Fields/FieldCheckbox'
-import { parseSelectsData, applyRequiredRules } from './Helpers'
+import { parseSelectsData, getRegisterConfig } from './Helpers'
 
 export function GenericForm({
   fields,
@@ -21,8 +21,9 @@ export function GenericForm({
         })}
       >
         {fields.map(
-          (
-            {
+          (props, index) => {
+
+            let {
               required,
               disabled,
               type,
@@ -33,15 +34,13 @@ export function GenericForm({
               allowDecimals,
               icon,
               ...otherprops
-            },
-            index
-          ) => {
-            let isFieldRequired = applyRequiredRules(required, disabled)
+            } = props
+
             if (type == 'select')
               return (
                 <FieldSelect
                   control={control}
-                  required={isFieldRequired}
+                  rules={getRegisterConfig(props)}
                   title={title}
                   name={name}
                   errors={errors}
@@ -54,9 +53,7 @@ export function GenericForm({
             else if (type == 'checkbox')
               return (
                 <FieldCheckbox
-                  inputRef={register({
-                    required: false,
-                  })}
+                  inputRef={register(getRegisterConfig(props))}
                   title={title}
                   name={name}
                   errors={errors}
@@ -68,9 +65,7 @@ export function GenericForm({
             else
               return (
                 <FieldInput
-                  inputRef={register({
-                    required: isFieldRequired,
-                  })}
+                  inputRef={register(getRegisterConfig(props))}
                   title={title}
                   name={name}
                   type={type}

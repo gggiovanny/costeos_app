@@ -5,7 +5,7 @@ import { Controller } from 'react-hook-form'
 export const FieldSelect = ({
   data,
   control,
-  required,
+  rules,
   name,
   title,
   errors,
@@ -19,7 +19,7 @@ export const FieldSelect = ({
       <Controller
         name={name}
         control={control}
-        rules={{ required: required }}
+        rules={rules}
         options={data}
         defaultValue={defaultValue}
         isDisabled={disabled}

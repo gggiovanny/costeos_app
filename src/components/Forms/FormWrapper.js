@@ -1,5 +1,5 @@
 import { Children, cloneElement } from 'react'
-import { parseSelectsData, applyRequiredRules } from './Helpers'
+import { parseSelectsData, getRegisterConfig } from './Helpers'
 
 export function FormWrapper({
   register,
@@ -17,14 +17,12 @@ export function FormWrapper({
       })}
     >
       {Children.map(children, (Field, index) => {
-        let { required, disabled, name } = Field.props
-        let isFieldRequired = applyRequiredRules(required, disabled)
-
+        let { name } = Field.props
+        const registerConfig = getRegisterConfig(Field.props)
         // agregando props a cada Field hijo de FormWrapper para controlarlos con react-hook-form
         return cloneElement(Field, {
-          inputRef: register({
-            required: isFieldRequired,
-          }),
+          inputRef: register(registerConfig),
+          rules: registerConfig,
           errors: errors,
           key: name + index,
           control: control,
