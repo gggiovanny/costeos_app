@@ -1,21 +1,53 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-export function FieldInput({
-  name,
-  type,
-  title,
-  placeholder,
-  icon,
-  iconRight = null,
-  errors,
-  inputRef,
-  allowDecimals = false,
-  disabled = false,
-  infoText = null,
-  ...otherprops
-}) {
-  const showError = errors[name]
+const or = (def, alt) => (def !== undefined ? def : alt)
+
+let getErrorMessage = (
+  error,
+  { title, placeholder, name, min, max, minLength, maxLength }
+) => {
+  let msg = 'Campo inválido'
+  const fieldname = (title || placeholder || name).toLowerCase()
+  switch (error.type) {
+    case 'required':
+      msg = `Falta agregar ${fieldname}.`
+      break
+    case 'min':
+    case 'max':
+      msg = `El valor de ${fieldname} debe estar entre ${or(min, '?')} y ${or(
+        max,
+        '?'
+      )}.`
+      break
+    case 'minLength':
+    case 'maxLength':
+      msg = `El campo ${fieldname} debe tener entre ${or(
+        minLength,
+        '?'
+      )} y ${or(maxLength, '?')} caracteres.`
+
+      break
+  }
+  return msg
+}
+
+export function FieldInput(props) {
+  const {
+    name,
+    type,
+    title,
+    placeholder,
+    icon,
+    iconRight = null,
+    errors,
+    inputRef,
+    allowDecimals = false,
+    disabled = false,
+    infoText = null,
+    ...otherprops
+  } = props
+  const error = errors[name]
   return (
     <div className="field">
       {title && <label className="label">{title}</label>}
@@ -42,10 +74,8 @@ export function FieldInput({
         )}
       </div>
       {infoText && <p className="help is-info">{infoText}</p>}
-      {showError && (
-        <p className="help is-danger">
-          Falta agregar {(title || placeholder || name).toLowerCase()}.
-        </p>
+      {error && (
+        <p className="help is-danger">{getErrorMessage(error, props)}</p>
       )}
     </div>
   )

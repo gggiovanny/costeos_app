@@ -151,6 +151,8 @@ export function Insumos() {
         type: 'number',
         allowDecimals: true,
         icon: <FaTrashAlt />,
+        min: 0,
+        max: 1,
       },
       {
         title: 'Artículo no esencial en almacén',
@@ -171,12 +173,14 @@ export function Insumos() {
         name: 'marca',
         type: 'text',
         icon: <VscTag />,
+        required: false,
       },
       {
         title: 'Proveedor',
         name: 'proveedor',
         type: 'text',
         icon: <FaTruck />,
+        required: false,
       },
     ],
     [
