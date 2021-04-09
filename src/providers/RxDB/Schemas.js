@@ -49,7 +49,7 @@ const unidadesSchema = {
 const insumosSchema = {
   title: 'insumos schema',
   description: 'Registro de insumos',
-  version: 0,
+  version: 1,
   type: 'object',
   properties: {
     id: {
@@ -62,7 +62,7 @@ const insumosSchema = {
     nombre: {
       type: 'string',
     },
-    unidad_entrada: {
+    unidad_compra: {
       ref: 'unidades',
       type: 'string',
     },
@@ -85,13 +85,18 @@ const insumosSchema = {
     stock_minimo: {
       type: 'number',
     },
+    proveedor: {
+      type: 'string',
+    },
+    marca: {
+      type: 'string',
+    },
   },
   required: ['nombre'],
   indexes: ['timestamp'],
 }
 
-export const collections =
-{
+export const collections = {
   costosfijos: {
     schema: costofijoSchema,
   },
@@ -100,6 +105,21 @@ export const collections =
   },
   insumos: {
     schema: insumosSchema,
+    migrationStrategies: {
+      // 1 means, this transforms data from version 0 to version 1
+      1: function (oldDoc) {
+        // convirtiendo campos numericos mal capturados
+        oldDoc.factor_conversion = toNum(oldDoc.factor_conversion, 1)
+        oldDoc.merma = toNum(oldDoc.merma, 0)
+        oldDoc.stock_minimo = toNum(oldDoc.stock_minimo, null)
+        // renombrando unidad_entrada -> unidad_compra
+        oldDoc.unidad_compra = oldDoc.unidad_entrada
+        delete oldDoc.unidad_entrada
+        return oldDoc
+      },
+    },
   },
 }
 
+const toNum = (str_num, default_val) =>
+  str_num ? parseFloat(str_num) : default_val

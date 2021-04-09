@@ -72,7 +72,7 @@ export function Insumos() {
 
   // campos del formulario que se observan mientras se modifican
   const unidadSalida = watch('unidad_salida')
-  const unidadEntrada = watch('unidad_entrada')
+  const unidadEntrada = watch('unidad_compra')
   // usado como unidad de stock_minimo
   const unidadStockAbrev = useMemo(
     () =>
@@ -116,8 +116,8 @@ export function Insumos() {
         icon: <HiTag />,
       },
       {
-        title: 'Unidad de entrada',
-        name: 'unidad_entrada',
+        title: 'Unidad de compra',
+        name: 'unidad_compra',
         type: 'select',
         data: unidadesOptions,
       },
@@ -184,7 +184,7 @@ export function Insumos() {
       },
       {
         Header: 'Uni. ent.',
-        accessor: 'unidad_entrada',
+        accessor: 'unidad_compra',
         show_normal_callback: (item, original) => {
           const unidadObj = unidades.find((u) => u.id == item)
           return unidadObj ? unidadObj.abrev : item
